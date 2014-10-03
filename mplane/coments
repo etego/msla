@@ -1,0 +1,178 @@
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 27, 889863), seq=1, ttl=64, usec=682)
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 28, 888732), seq=2, ttl=64, usec=660)
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 29, 888384), seq=3, ttl=64, usec=592)
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 30, 888348), seq=4, ttl=64, usec=606)
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 31, 888180), seq=5, ttl=64, usec=614)
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 32, 888389), seq=6, ttl=64, usec=674)
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 33, 888285), seq=7, ttl=64, usec=580)
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 34, 888435), seq=8, ttl=64, usec=680)
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 35, 888424), seq=9, ttl=64, usec=678)
+ping PingValue(time=datetime.datetime(2014, 9, 9, 17, 21, 36, 888397), seq=10, ttl=64, usec=648)
+
+
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 192.168.208.137 port 41371 connected with 192.168.208.104 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0- 1.0 sec  12.2 MBytes   103 Mbits/sec
+[  3]  1.0- 2.0 sec  11.1 MBytes  93.3 Mbits/sec
+[  3]  2.0- 3.0 sec  11.1 MBytes  93.3 Mbits/sec
+[  3]  3.0- 4.0 sec  11.5 MBytes  96.5 Mbits/sec
+[  3]  4.0- 5.0 sec  11.1 MBytes  93.3 Mbits/sec
+[  3]  5.0- 6.0 sec  11.1 MBytes  93.3 Mbits/sec
+[  3]  6.0- 7.0 sec  11.1 MBytes  93.3 Mbits/sec
+[  3]  7.0- 8.0 sec  11.1 MBytes  93.3 Mbits/sec
+[  3]  8.0- 9.0 sec  11.1 MBytes  93.3 Mbits/sec
+[  3]  9.0-10.0 sec  11.5 MBytes  96.5 Mbits/sec
+[  3]  0.0-10.0 sec   113 MBytes  94.7 Mbits/sec
+
+
+mplane1@mplane1:~/Downloads/sla$ ping 192.168.208.104
+PING 192.168.208.104 (192.168.208.104) 56(84) bytes of data.
+64 bytes from 192.168.208.104: icmp_seq=1 ttl=64 time=0.695 ms
+64 bytes from 192.168.208.104: icmp_seq=2 ttl=64 time=0.660 ms
+64 bytes from 192.168.208.104: icmp_seq=3 ttl=64 time=0.650 ms
+64 bytes from 192.168.208.104: icmp_seq=4 ttl=64 time=0.664 ms
+64 bytes from 192.168.208.104: icmp_seq=5 ttl=64 time=0.663 ms
+64 bytes from 192.168.208.104: icmp_seq=6 ttl=64 time=0.640 ms
+64 bytes from 192.168.208.104: icmp_seq=7 ttl=64 time=0.640 ms
+
+
+mplane1@mplane1:~/Downloads/sla$ python3 mplane/slatcp.py --ip4addr 127.0.0.1 --sec 1
+Traceback (most recent call last):
+  File "mplane/slatcp.py", line 308, in <module>
+    scheduler.add_service(tcpslaService(tcpsla4_aggregate_capability(ip4addr)))
+  File "mplane/slatcp.py", line 107, in tcpsla4_aggregate_capability
+    cap.add_result_column("capacity.download.iperf.us.min")
+  File "/home/mplane1/Downloads/sla/mplane/model.py", line 1799, in add_result_column
+    self._resultcolumns[elem_name] = ResultColumn(element(elem_name))
+  File "/home/mplane1/Downloads/sla/mplane/model.py", line 1313, in element
+    return _registry[name]
+  File "/home/mplane1/Downloads/sla/mplane/model.py", line 1236, in __getitem__
+    return self._elements[name]
+KeyError: 'capacity.download.iperf.us.min'
+
+
+
+
+    {
+      "name": "capacity.download.iperf.us",
+      "prim": "natural",
+      "desc": "Singleton download line capacity measurement using UDP protocol, with iperf meassurement tool"
+    },
+    {
+      "name": "capacity.download.iperf.us.min",
+      "prim": "natural",
+      "desc": "Minimum download line capacity measurement using UDP protocol, with iperf meassurement tool"
+    },
+    {
+      "name": "capacity.download.iperf.us.mean",
+      "prim": "natural",
+      "desc": "Mean download line capacity measurement using UDP protocol, with iperf meassurement tool"
+    },
+    {
+      "name": "capacity.download.iperf.us.max",
+      "prim": "natural",
+      "desc": "Maximum download line capacity measurement using UDP protocol, with iperf meassurement tool"
+    },
+    {
+      "name": "capacity.download.iperf.us.count",
+      "prim": "natural",
+      "desc": "Count of valid download line capacity measurement using UDP protocol, with iperf meassurement tool"
+    },
+    
+    Scheduling <Job for <specification: measure (tcpsla-detail-ip4) when now + 10s / 1s token d7931da1 schema c1bd0fc7 p(v)/m/r 2(2)/0/2>> immediately
+running iperf -c -i 1.0 -c 10 -S 192.168.208.137 192.168.208.104
+Returning <receipt: d7931da1d6ec5aa32d97652c9a33b462>
+Got exception in _run(), returning <Exception: d7931da1d6ec5aa32d97652c9a33b462 [Errno 2] No such file or directory: 'iperf -c'>
+
+\d
+Matches any decimal digit; this is equivalent to the class [0-9].
+\D
+Matches any non-digit character; this is equivalent to the class [^0-9].
+\s
+Matches any whitespace character; this is equivalent to the class [ \t\n\r\f\v].
+\S
+Matches any non-whitespace character; this is equivalent to the class [^ \t\n\r\f\v].
+\w
+Matches any alphanumeric character; this is equivalent to the class [a-zA-Z0-9_].
+\W
+Matches any non-alphanumeric character; this is equivalent to the class [^a-zA-Z0-9_].
+These sequences can be included inside a character class. For example, [\s,.] is a character class that will match any whitespace character, or ',' or '.'.
+
+
+
+64 bytes from 192.168.208.104: icmp_seq=2 ttl=64 time=0.659 ms
+udpslaline_re = re.compile("iperf_interval=(\d+)\s+\S+=(\d+)\s+time=([\d\.]+)\s+ms")
+
+_udpslaline_re = re.compile("iperf_interval=\D(\d+)\D\s+(\w.+)\W+\s+\w.+\s+\w.+(\w.+)\s+MBytes\s+(\w.+)\s+Mbits/sec")
+
+[  3]  0.0- 1.0 sec  12.2 MBytes   103 Mbits/sec
+
+
+[  3] local 192.168.208.137 port 42197 connected with 192.168.208.104 port 5002
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0- 1.0 sec  11.5 MBytes  96.1 Mbits/sec
+[  3]  0.0-10.0 sec   114 MBytes  95.5 Mbits/sec
+[  3] Sent 81263 datagrams
+[  3] Server Report:
+[  3]  0.0-10.0 sec   114 MBytes  95.5 Mbits/sec   0.476 ms    0/81262 (0%)
+[  3]  0.0-10.0 sec  1 datagrams received out-of-order
+mplane1@mplane1:~/Downloads/sla$ 
+
+PING 192.168.208.104 (192.168.208.104) 56(84) bytes of data.
+64 bytes from 192.168.208.104: icmp_seq=1 ttl=64 time=0.647 ms
+--- 192.168.208.104 ping statistics ---
+9 packets transmitted, 9 received, 0% packet loss, time 7997ms
+rtt min/avg/max/mdev = 0.588/0.630/0.647/0.023 ms
+
+
+
+
+_pingline_re = re.compile("icmp_seq=\[+\s+\s+\d+\]+\s+\s+\d.+\d-+\s+(\d+)\.\d+\s+sec\s+\s+(\d\.\d+)\s+MBytes\s+\s+(\d+\d+\.+\d+)Mbits\/+sec")
+
+_ping4cmd = "ping"
+_ping6cmd = "ping6"
+_pingopts = ["-n"]
+_pingopt_period = "-i"
+_pingopt_count = "-c"
+_pingopt_source = "-S"
+
+LOOP4 = "127.0.0.1"
+LOOP6 = "::1"
+
+PingValue = collections.namedtuple("PingValue", ["time", "seq", "ttl", "usec"])
+
+def _parse_ping_line(line):
+    m = _pingline_re.search(line)
+    if m is None:
+        print(line)
+        return None
+    mg = m.groups()
+    return PingValue(datetime.utcnow(), int(mg[0]), int(mg[1]), int(float(mg[2]) * 1000))
+
+
+
+
+_udpslaline_re = re.compile("iperf_interval=\D+\d+\D+\s+(\w.+)\W+\s+\w.+\s+\w.+(\w.+)\s+MBytes\s+(\w.+)\s+Mbits/sec")
+
+_udpsla4cmd = "iperf"
+_udpsla6cmd = "iperf"
+_udpslaopts = ["-n"]
+_udpslaopt_period = "-i 1"
+_udpslaopt_count = "-t 5"
+_udpslaopt_source = "-c"
+_udpslaopt_band = "-b 1000m"
+_udpslaopt_port = "-p 5002"
+_udpslaopt_testudp = "-u"
+LOOP4 = "127.0.0.1"
+LOOP6 = "::1"
+
+udpslaValue = collections.namedtuple("udpslaValue", ["time", "interval", "transfer", "bandwidth"])
+def _parse_udpsla_line(line):
+    m = _udpslaline_re.search(line)
+    if m is None:
+        print(line)
+        return None
+    mg = m.groups()
+    return udpslaValue(datetime.utcnow(), int(float(mg[0])), int(float(mg[1])), int(float(mg[2]) * 1000))

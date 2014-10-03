@@ -1,0 +1,14 @@
+1. sudo apt-get install python3-yaml
+2. sudo apt-get install python3-pip
+3. sudo pip3 install tornado
+4. PYTHONPATH="/home/mplane2/Downloads/sla"
+5. export PYTHONPATH
+6. cd mplane/
+7. python3 ping.py -4 "server-address" --sec "0/1"
+8. python3 mplane/client.py 
+9. |mplane| connect http://192.168.208.137:8888
+10. |mplane| when now + 10s / 1s
+11. |mplane| runcap 0
+12. |param| source.ip4 = 127.0.0.1
+13. |param| destination.ip4 = 192.168.208.104
+
