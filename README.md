@@ -1,3 +1,16 @@
+mSLACert Active probe
+
+Description:
+
+The ubiquity of Internet access, and the wide variety of Internet-enabled devices, have made the Internet a principal pillar of the Information Society. As the importance of the Internet to everyday life grows, reliability of the characteristics of Internet service (availability, throughput, delay, etc.) grows important as well. Service Level Agreements (SLAs) between providers and customers of Internet services regulate the minimum level of service provided in terms of one or more measurable parameters.
+
+We have developed an algorithm that is capable to give mSLA certification, by making use of UDP and TCP protocols. Here we present an alpha version of our algorithm, which is implemented in bash script. To achieve the mSLA certification the algorithm makes use of the tool iperf (http://iperf.fr), and PING.
+
+mSLAcert makes  the measurement and calculation to certify, the Goodput at layer seven, throughput at layer four and line capacity at layer 2 of OSI standard.
+
+
+How to run the probe compliant with mplane protocol:
+
 --------------------------------------------------------------
 ------------------General-------------------------------------
 --------------------------------------------------------------
@@ -36,3 +49,6 @@
 4. |mplane| runcap 0
 5. |param| source.ip4 = "Source-IP-Adress"
 6. |param| destination.ip4 = "Destination-IP-Adress"
+-------------------------------------------------------------
+
+The results of the probe are, the minimum, mean and maximum value of RTT, TCP measured bandwidth and UDP measure!
