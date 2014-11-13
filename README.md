@@ -8,6 +8,7 @@ ________________________________________________________________________________
 
 ________________________________________________________________________________________________________________________________________________________________________________________
 2. Install, Yalm, Iperf and Tornado
+
      1. sudo apt-get install iperf
      2. apt-get install python3-yaml
      3. apt-get install python3-tornado
@@ -29,10 +30,12 @@ ________________________________________________________________________________
 
 ________________________________________________________________________________________________________________________________________________________________________________________
 4. Run mPlane
+
         1. First you need to launch the supervisor (run these commands from inside the mSLAcert-RI folder)
                 export MPLANE_CONF_DIR=./conf
                 python3 -m mplane.supervisor -c ./conf/supervisor-certs.conf -s 127.0.0.1 -p 8888   (-s 127.0.0.1 -p 8888, it the IP adress of the supervisor and the port)
-        2. Then you can launch the probe, on the same PC or on a different PC, in this case we tested them on the same PC.
+
+    	2. Then you can launch the probe, on the same PC or on a different PC, in this case we tested them on the same PC.
                 python3 -m mplane.mSLA_main_service -c ./conf/component-certs.conf  -d 127.0.0.1 -p 8888
                 
         3. You also can launch the client with
