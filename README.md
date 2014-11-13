@@ -1,6 +1,8 @@
+##mSLAcert_V_2.0.1
 ### How to run mplane architecture with msla probe.
 ________________________________________________________________________________________________________________________________________________________________________________________
 1. Requisites:
+
         1. Python version >=3
         2. Yalm, Tornado
         3. Iperf, you need to have it installed on two different PCs
