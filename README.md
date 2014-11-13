@@ -200,11 +200,11 @@ ________________________________________________________________________________
 
 ##\\\\\\\\\\\\\___END___//////////////
 
-########################################################################################
-#ORIGINAL README
-########################################################################################
+-----------------------------------------------------------------------
 
-# mPlane (almost) full architecture implementation
+ORIGINAL README
+
+mPlane (almost) full architecture implementation
 
 This repository contains a fully working Client-Supervisor-Probe architecture.
 
@@ -238,6 +238,8 @@ There are more options available, you can show them using `-h`. The commands wit
 * The scripts in the PKI folder allow you to generate your own certificate. It is strongly recommended to use the provided root-ca, and only generate your own client, component and supervisor certificates, so that we avoid several self-signed certificates that cannot cooperate.
 *///||\\ You will need the root-ca passphrase to generate certificates: send me a mail at stefano.pentassuglia@ssbprogetti.it and I'll tell you that.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 ##Version 1.0.1
 mSLACert Active probe
 
