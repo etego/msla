@@ -42,7 +42,8 @@ ________________________________________________________________________________
                 python3 -m mplane.client -c ./conf/client-certs.conf -d 127.0.0.1 -p 8888
                 
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\This part is temporal, we are developing an agent probe that will register at the supervisor as such\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        4. Aditional comands, on a separate PC, you need to run two iperf servers
+        
+		4. Aditional comands, on a separate PC, you need to run two iperf servers
            Open two separate terminals and enter the sequent comands:
                 iperf -s -p 5001 -i 1 (on one terminal)
                 iperf -s -p 5002 -1 1 (on the other terminal)               
@@ -67,6 +68,7 @@ ________________________________________________________________________________
         Checking for Specifications...
         
 While on the supervisor:
+
         Capability ping-average-ip4 received from org.mplane.Test PKI.Test Clients.mPlane-Client
         |mplane| register
         Capability ping-detail-ip4 received from org.mplane.Test PKI.Test Clients.mPlane-Client
@@ -112,7 +114,8 @@ ________________________________________________________________________________
         |mplane| 
 
 6.2. You can run a capability at the supervisor with "runcap NUMBER-OF-CAP":
-        |mplane| runcap 5 (We are runing capability number 5, that would be 5 - tcpsla-average-ip4 from 127.0.0.1)
+        
+		|mplane| runcap 5 (We are runing capability number 5, that would be 5 - tcpsla-average-ip4 from 127.0.0.1)
         |when| = now + 10s / 1s (Runing now for 10 seconds)
         |param| source.ip4 = 192.168.208.137 (The source IP address)
         |param| destination.ip4 = 192.168.208.104 (The IP address where is launched the Iperf server)
@@ -233,7 +236,7 @@ There are more options available, you can show them using `-h`. The commands wit
 * The configuration files are not changed from the original RI: you can set certificate paths from `conf/supervisor-certs.conf`, `conf/component-certs.conf` and `client-certs.conf`; and user-role-capability authorizations from `conf/users.conf` and `conf/caps.conf`
 * Since we are still in develop and test phases, all the PKI keys are publicly available. That, of course, will be fixed as soon as this phase ends
 * The scripts in the PKI folder allow you to generate your own certificate. It is strongly recommended to use the provided root-ca, and only generate your own client, component and supervisor certificates, so that we avoid several self-signed certificates that cannot cooperate.
-* You will need the root-ca passphrase to generate certificates: send me a mail at stefano.pentassuglia@ssbprogetti.it and I'll tell you that.
+*///||\\ You will need the root-ca passphrase to generate certificates: send me a mail at stefano.pentassuglia@ssbprogetti.it and I'll tell you that.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##Version 1.0.1
 mSLACert Active probe
