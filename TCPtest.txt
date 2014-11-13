@@ -1,0 +1,4 @@
+mSLA.tcpBandwidth.download.iperf.min    93
+mSLA.tcpBandwidth.download.iperf.mean    93
+mSLA.tcpBandwidth.download.iperf.max    96
+mSLA.tcpBandwidth.download.iperf.timecountseconds    9

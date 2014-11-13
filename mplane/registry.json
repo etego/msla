@@ -239,52 +239,52 @@
       "prim": "natural"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us",
+      "name": "mSLA.tcpBandwidth.download.iperf",
       "prim": "natural",
       "desc": "Singleton download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us.min",
+      "name": "mSLA.tcpBandwidth.download.iperf.min",
       "prim": "natural",
       "desc": "Minimum download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us.mean",
+      "name": "mSLA.tcpBandwidth.download.iperf.mean",
       "prim": "natural",
       "desc": "Mean download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us.max",
+      "name": "mSLA.tcpBandwidth.download.iperf.max",
       "prim": "natural",
       "desc": "Maximum download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us.timecountseconds",
+      "name": "mSLA.tcpBandwidth.download.iperf.timecountseconds",
       "prim": "natural",
       "desc": "Count of valid download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
        {
-      "name": "udpCapacity.download.iperf.us",
+      "name": "mSLA.udpCapacity.download.iperf",
       "prim": "natural",
       "desc": "Singleton download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "udpCapacity.download.iperf.us.min",
+      "name": "mSLA.udpCapacity.download.iperf.min",
       "prim": "natural",
       "desc": "Minimum download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "udpCapacity.download.iperf.us.mean",
+      "name": "mSLA.udpCapacity.download.iperf.mean",
       "prim": "natural",
       "desc": "Mean download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "udpCapacity.download.iperf.us.max",
+      "name": "mSLA.udpCapacity.download.iperf.max",
       "prim": "natural",
       "desc": "Maximum download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "udpCapacity.download.iperf.us.timecountseconds",
+      "name": "mSLA.udpCapacity.download.iperf.timecountseconds",
       "prim": "natural",
       "desc": "Count of valid download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },

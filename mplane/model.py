@@ -1,6 +1,3 @@
-#
-# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-#
 # mPlane Protocol Reference Implementation
 # Information Model and Element Registry
 #
@@ -271,12 +268,13 @@ ANCHOR_SEP = "#"
 
 CONSTRAINT_ALL = "*"
 VALUE_NONE = "*"
+VALUE_EMPTY = ""
 
 TIME_PAST = "past"
 TIME_NOW = "now"
 TIME_FUTURE = "future"
 
-VERB_MEASURE = "SLA-measure-ping-TCP-port5001-UDP-port5002"
+VERB_MEASURE = "measure"
 VERB_QUERY = "query"
 VERB_COLLECT = "collect"
 VERB_STORE = "store"
@@ -500,10 +498,10 @@ class When(object):
     """
     def __init__(self, valstr=None, a=None, b=None, d=None, p=None):
         super().__init__()
-        self._a = a
-        self._b = b
-        self._d = d
-        self._p = p
+        self._a = a     # Start Time
+        self._b = b     # End Time
+        self._d = d     # Duration
+        self._p = p     # Period
 
         if valstr is not None:
             self._parse(valstr)
@@ -926,7 +924,7 @@ class Primitive(object):
         mPlane.
 
         """
-        if sval is None or sval == VALUE_NONE:
+        if sval is None or sval == VALUE_NONE or sval == VALUE_EMPTY:
             return None
         else:
             return sval
@@ -973,7 +971,7 @@ class NaturalPrimitive(Primitive):
 
     def parse(self, sval):
         """Convert a string to a natural value."""
-        if sval is None or sval == VALUE_NONE:
+        if sval is None or sval == VALUE_NONE or sval == VALUE_EMPTY:
             return None
         else:
             # also converts values like 100.0 or 10E2
@@ -996,7 +994,7 @@ class RealPrimitive(Primitive):
 
     def parse(self, sval):
         """Convert a string to a floating point value."""
-        if sval is None or sval == VALUE_NONE:
+        if sval is None or sval == VALUE_NONE or sval == VALUE_EMPTY:
             return None
         else:
             return float(sval)
@@ -1018,7 +1016,7 @@ class BooleanPrimitive(Primitive):
     
     def parse(self, sval):
         """Convert a string to a boolean value."""
-        if sval is None or sval == VALUE_NONE:
+        if sval is None or sval == VALUE_NONE or sval == VALUE_EMPTY:
             return None
         elif sval == 'True':
             return True
@@ -1050,7 +1048,7 @@ class AddressPrimitive(Primitive):
 
     def parse(self, sval):
         """Convert a string to an address value."""
-        if sval is None or sval == VALUE_NONE:
+        if sval is None or sval == VALUE_NONE or sval == VALUE_EMPTY:
             return None
         else:
             return ip_address(sval)
@@ -1483,7 +1481,13 @@ class SetConstraint(Constraint):
 
     def met_by(self, val):
         """Determine if the value is a mamber of the set"""
-        return val in self.vs
+        if val.find(SET_SEP) > 0:
+            for v in val.split(SET_SEP):
+                if v not in self.vs:
+                    return False
+            return True
+        else:
+            return val in self.vs
 
     def single_value(self):
         """If this constraint only allows a single value, return it. Otherwise, return None."""
@@ -1612,7 +1616,7 @@ class Metavalue(Element):
                " value "+repr(self._val)+" >"
 
     def set_value(self, val):
-        if instanceof(val, str):
+        if isinstance(val, str):
             val = self._prim.parse(val)
         self._val = val
 
@@ -1643,6 +1647,9 @@ class ResultColumn(Element):
 
     def __getitem__(self, key):
         return self._vals[key]
+        
+    def get_value(self):
+        return self._vals
 
     def __setitem__(self, key, val):
         # Automatically parse strings
@@ -1740,6 +1747,14 @@ class Statement(object):
         self._params[elem_name] = Parameter(element(elem_name), 
                                   constraint=constraint,
                                   val = val)
+    
+    def remove_parameter(self, elem_name):
+        """
+        Remove a parameter from this statement.
+        If the parameter doesn't exist, nothing happens
+        """
+        if elem_name in self._params:
+            del self._params[elem_name]
 
     def has_parameter(self, elem_name):
         """Return True if the statement has a parameter with the given name"""
@@ -1798,6 +1813,10 @@ class Statement(object):
         """Programatically add a result column to this Statement."""
         self._resultcolumns[elem_name] = ResultColumn(element(elem_name))
 
+    def remove_result_column(self, elem_name):
+        """Remove a result column from this Statement."""
+        self._resultcolumns.popitem(elem_name)
+
     def has_result_column(self, elem_name):
         return elem_name in self._resultcolumns
 
@@ -1808,6 +1827,10 @@ class Statement(object):
     def count_result_columns(self):
         """Return the number of result columns in this Statement"""
         return len(self._resultcolumns)
+
+    def get_result_value(self, elem_name):
+        """Return the value for a named result on this Statement."""
+        return self._resultcolumns[elem_name].get_value()
 
     def count_result_rows(self):
         """Return the number of result rows in this Statement"""
@@ -2171,19 +2194,6 @@ class Specification(Statement):
     def has_schedule(self):
         return self._schedule is not None
 
-    def subspec_iterator(self):
-        """
-        Iterate over subordinate specifications if this specification is repeated 
-        (i.e., has a Schedule); otherwise yields self once. Each subordinate 
-        specification has an absolute temporal scope derived from this specification's
-        relative temporal scope and schedule.
-        """
-
-        if not self.has_schedule:
-            yield self
-        else:
-            pass #FIXME write this
-
     def _from_dict(self, d):
         super()._from_dict(d)
 
@@ -2329,6 +2339,7 @@ class StatementNotification(Statement):
         if dictval is None and statement is not None:
             self._verb = statement._verb
             self._when = statement._when
+            self._label = statement._label
             self._metadata = statement._metadata
             self._params = deepcopy(statement._params)
             self._resultcolumns = deepcopy(statement._resultcolumns)

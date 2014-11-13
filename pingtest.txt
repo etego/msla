@@ -1,0 +1,4 @@
+microsec.delay.twoway.icmp.min    606
+microsec.delay.twoway.icmp.mean    648
+microsec.delay.twoway.icmp.max    737
+microsec.delay.twoway.icmp.count    10

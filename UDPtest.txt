@@ -1,0 +1,4 @@
+mSLA.udpCapacity.download.iperf.min    95
+mSLA.udpCapacity.download.iperf.mean    95
+mSLA.udpCapacity.download.iperf.max    96
+mSLA.udpCapacity.download.iperf.timecountseconds    9

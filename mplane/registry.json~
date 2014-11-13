@@ -239,77 +239,77 @@
       "prim": "natural"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us",
+      "name": "mSLA.tcpBandwidth.download.iperf",
       "prim": "natural",
       "desc": "Singleton download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us.min",
+      "name": "mSLA.tcpBandwidth.download.iperf.min",
       "prim": "natural",
       "desc": "Minimum download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us.mean",
+      "name": "mSLA.tcpBandwidth.download.iperf.mean",
       "prim": "natural",
       "desc": "Mean download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us.max",
+      "name": "mSLA.tcpBandwidth.download.iperf.max",
       "prim": "natural",
       "desc": "Maximum download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "tcpBandwidth.download.iperf.us.timecountseconds",
+      "name": "mSLA.tcpBandwidth.download.iperf.timecountseconds",
       "prim": "natural",
       "desc": "Count of valid download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
        {
-      "name": "udpCapacity.download.iperf.us",
+      "name": "mSLA.udpCapacity.download.iperf",
       "prim": "natural",
       "desc": "Singleton download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "udpCapacity.download.iperf.us.min",
+      "name": "mSLA.udpCapacity.download.iperf.min",
       "prim": "natural",
       "desc": "Minimum download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "udpCapacity.download.iperf.us.mean",
+      "name": "mSLA.udpCapacity.download.iperf.mean",
       "prim": "natural",
       "desc": "Mean download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "udpCapacity.download.iperf.us.max",
+      "name": "mSLA.udpCapacity.download.iperf.max",
       "prim": "natural",
       "desc": "Maximum download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "udpCapacity.download.iperf.us.timecountseconds",
+      "name": "mSLA.udpCapacity.download.iperf.timecountseconds",
       "prim": "natural",
       "desc": "Count of valid download line capacity measurement using UDP protocol, with iperf meassurement tool"
     },
     {
-      "name": "delay.twoway.icmp.us",
+      "name": "mSLA.delay.twoway.icmp",
       "prim": "natural",
       "desc": "Singleton two-way delay as measured by ICMP Echo Request/Reply"
     },
     {
-      "name": "delay.twoway.icmp.us.min",
+      "name": "mSLA.delay.twoway.icmp.min",
       "prim": "natural",
       "desc": "Minimum two-way delay as measured by ICMP Echo Request/Reply"
     },
     {
-      "name": "delay.twoway.icmp.us.mean",
+      "name": "mSLA.delay.twoway.icmp.mean",
       "prim": "natural",
       "desc": "Mean two-way delay as measured by ICMP Echo Request/Reply"
     },
     {
-      "name": "delay.twoway.icmp.us.max",
+      "name": "mSLA.delay.twoway.icmp.max",
       "prim": "natural",
       "desc": "Maximum two-way delay as measured by ICMP Echo Request/Reply"
     },
     {
-      "name": "delay.twoway.icmp.us.count",
+      "name": "mSLA.delay.twoway.icmp.count",
       "prim": "natural",
       "desc": "Count of valid ICMP Echo Replies received when measuring two-way delay using ICMP Echo Request/Reply"
     },

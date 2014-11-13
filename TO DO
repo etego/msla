@@ -1,0 +1,9 @@
+같같캴O같같DO같같�
+1. ADD IP and Security options check
+2. Parse arguments errors, double check !!!
+3. Add Super-service, that registers all child services and call them one after another
+4. Compatibility ipv6, doubble check
+
+Changelog v 2.0.1
+#Added integrity with supervisor
+#Deleted separate server http.
