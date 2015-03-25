@@ -1,8 +1,16 @@
 같같캴O같같DO같같�
-1. ADD IP and Security options check
-2. Parse arguments errors, double check !!!
-3. Add Super-service, that registers all child services and call them one after another
-4. Compatibility ipv6, doubble check
+1. Repar i_am_agent response
+2. Change to SDK branch
+
+
+
+Changelog v 2.0.2
+#Added new capability msla4_aggregate_capability, msla4_singleton_capability
+#Added Jitter_in_ms result_column
+#Added Error_prc result_column
+#Added Bandwidth_Mbps correct column
+#Added agent mplane compliant msla-Agent
+
 
 Changelog v 2.0.1
 #Added integrity with supervisor

@@ -1,4 +1,44 @@
-mSLA.udpCapacity.download.iperf.min    95
-mSLA.udpCapacity.download.iperf.mean    95
-mSLA.udpCapacity.download.iperf.max    96
-mSLA.udpCapacity.download.iperf.timecountseconds    9
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=99    0
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    0
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    0
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=99    1
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    1
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    1
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=99    2
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    2
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    2
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=86    3
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    3
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    3
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=99    4
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    4
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    4
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=97    5
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    5
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    5
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=99    6
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    6
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    6
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=99    7
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    7
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    7
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=99    8
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    8
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    8
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=97    9
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    9
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    9
+mSLA.udpCapacity.download.iperf    UDP-Bandwidth_Mbps=89    10
+mSLA.udpCapacity.download.iperf.jitter    UDP-Jitter_ms=0.19    10
+mSLA.udpCapacity.download.iperf.error    UDP-dagram Error_prc=8    10
+time    datetime.datetime(2015, 3, 23, 19, 37, 8, 880899)    0
+time    datetime.datetime(2015, 3, 23, 19, 37, 9, 874228)    1
+time    datetime.datetime(2015, 3, 23, 19, 37, 10, 879558)    2
+time    datetime.datetime(2015, 3, 23, 19, 37, 11, 882669)    3
+time    datetime.datetime(2015, 3, 23, 19, 37, 12, 882116)    4
+time    datetime.datetime(2015, 3, 23, 19, 37, 13, 872812)    5
+time    datetime.datetime(2015, 3, 23, 19, 37, 14, 877476)    6
+time    datetime.datetime(2015, 3, 23, 19, 37, 15, 873230)    7
+time    datetime.datetime(2015, 3, 23, 19, 37, 16, 878672)    8
+time    datetime.datetime(2015, 3, 23, 19, 37, 16, 878794)    9
+time    datetime.datetime(2015, 3, 23, 19, 37, 16, 889171)    10

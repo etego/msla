@@ -1,3 +1,15 @@
+##mSLAcert_V_2.0.2
+### How to run mplane architecture with msla probe.
+________________________________________________________________________________________________________________________________________________________________________________________
+
+sudo apt-get install python3-pip
+
+sudo pip install request
+sudo pip install lxml
+sudo pip install cssselect
+sudo pip install urllib3
+
+
 ##mSLAcert_V_2.0.1
 ### How to run mplane architecture with msla probe.
 ________________________________________________________________________________________________________________________________________________________________________________________
@@ -12,10 +24,11 @@ ________________________________________________________________________________
 2. Install, Yalm, Iperf and Tornado
 
      1. sudo apt-get install iperf
-     2. apt-get install python3-yaml
-     3. apt-get install python3-tornado
+     2. sudo apt-get install python3-yaml
+     3. sudo apt-get install python3-tornado
      4. Download mSLAcert_2.0.1 files
      5. Configure the configuration file for the certificates .conf/component-certs.conf and ./conf/supervisor-certs.conf, also .conf/client-certs.conf, if you will be using the client.
+
         --You can either use the certificated that are on the PKI folder, or generate new one (Personaly i had an error with ssl so i had to disable security)
 ______________________________________________________________________________________________________________________________________________________________________________________  
 3. The scenario is the sequent one:
@@ -35,13 +48,13 @@ ________________________________________________________________________________
 
         1. First you need to launch the supervisor (run these commands from inside the mSLAcert-RI folder)
                 export MPLANE_CONF_DIR=./conf
-                python3 -m mplane.supervisor -c ./conf/supervisor-certs.conf -s 127.0.0.1 -p 8888   (-s 127.0.0.1 -p 8888, it the IP adress of the supervisor and the port)
+                python3 -m mplane.supervisor --disable-ssl -c ./conf/supervisor-certs.conf -s 127.0.0.1 -p 8888   (-s 127.0.0.1 -p 8888, it the IP adress of the supervisor and the port)
 
     	2. Then you can launch the probe, on the same PC or on a different PC, in this case we tested them on the same PC.
-                python3 -m mplane.mSLA_main_service -c ./conf/component-certs.conf  -d 127.0.0.1 -p 8888
+                python3 -m mplane.mSLA_main --disable-ssl -c ./conf/component-certs.conf  -d 127.0.0.1 -p 8888
                 
         3. You also can launch the client with
-                python3 -m mplane.client -c ./conf/client-certs.conf -d 127.0.0.1 -p 8888
+                python3 -m mplane.client --disable-ssl -c ./conf/client-certs.conf -d 127.0.0.1 -p 8888
                 
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\This part is temporal, we are developing an agent probe that will register at the supervisor as such\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         

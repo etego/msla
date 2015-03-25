@@ -241,27 +241,27 @@
     {
       "name": "mSLA.tcpBandwidth.download.iperf",
       "prim": "natural",
-      "desc": "Singleton download line capacity measurement using UDP protocol, with iperf meassurement tool"
+      "desc": "Singleton download line capacity measurement using TCP protocol, with iperf meassurement tool"
     },
     {
       "name": "mSLA.tcpBandwidth.download.iperf.min",
       "prim": "natural",
-      "desc": "Minimum download line capacity measurement using UDP protocol, with iperf meassurement tool"
+      "desc": "Minimum download line capacity measurement using TCP protocol, with iperf meassurement tool"
     },
     {
       "name": "mSLA.tcpBandwidth.download.iperf.mean",
       "prim": "natural",
-      "desc": "Mean download line capacity measurement using UDP protocol, with iperf meassurement tool"
+      "desc": "Mean download line capacity measurement using TCP protocol, with iperf meassurement tool"
     },
     {
       "name": "mSLA.tcpBandwidth.download.iperf.max",
       "prim": "natural",
-      "desc": "Maximum download line capacity measurement using UDP protocol, with iperf meassurement tool"
+      "desc": "Maximum download line capacity measurement using TCP protocol, with iperf meassurement tool"
     },
     {
       "name": "mSLA.tcpBandwidth.download.iperf.timecountseconds",
       "prim": "natural",
-      "desc": "Count of valid download line capacity measurement using UDP protocol, with iperf meassurement tool"
+      "desc": "Count of valid download line capacity measurement using TCP protocol, with iperf meassurement tool"
     },
        {
       "name": "mSLA.udpCapacity.download.iperf",
@@ -287,6 +287,21 @@
       "name": "mSLA.udpCapacity.download.iperf.timecountseconds",
       "prim": "natural",
       "desc": "Count of valid download line capacity measurement using UDP protocol, with iperf meassurement tool"
+    },
+    {
+      "name": "mSLA.udpCapacity.download.iperf.jitter",
+      "prim": "real",
+      "desc": "Jitter measurement using UDP protocol, with iperf meassurement tool"
+    },
+    {
+      "name": "mSLA.udpCapacity.download.iperf.error",
+      "prim": "real",
+      "desc": "Datagram loss in percentage measurement using UDP protocol, with iperf meassurement tool"
+    },
+    {
+      "name": "mSLA-Bandwidth_mean_Mbps-Correct-UDP",
+      "prim": "real",
+      "desc": "Agent probe that acts only as a destination point"
     },
     {
       "name": "delay.twoway.icmp.us",

@@ -30,53 +30,15 @@ from urllib3 import HTTPConnectionPool
 import os.path
 import argparse
 import json
-import subprocess
 
 from datetime import datetime, timedelta
 
-pid = subprocess.Popen(args=[
-    "gnome-terminal", "--command=iperf -s -u -p 5002 -i 1"]).pid
-"""print pid"""
-
-
-pid = subprocess.Popen(args=[
-    "gnome-terminal", "--command=iperf -s -p 5001 -i 1"]).pid
-	
 DEFAULT_SV_PORT = 8888
 DEFAULT_SV_IP4 = '127.0.0.1'
 S_CAPABILITY_PATH = "show/capability"
 S_SPECIFICATION_PATH = "register/specification"
 S_RESULT_PATH = "show/result"
-print("    ###########################################################################################################");
-print("    ###$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ###$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$     $$$$$$$$  $$$$$$       $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ##$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  $$$  $$$$$$  $$$$$  $$$$$  $$$$$$  $$$$$$$$$$$$$$    $$$$$$$$##");
-print("    ##$$$$$$$$$$$$$      $$$$$$$$$$$$$$$$$$$$$  $$$$$  $$$$  $$$$  $$$$$$$  $$$$$        $$$$$$  $$$$  $$$$$$##");
-print("    ##$$$$$$$$$$   ;$$$$   $$$$$$       $$$$$$  $$$$  $$$$$  $$$$$$$$$   $  $$$$$  $$$$$  $$$$  $$$$$  $$$$$$##");
-print("    ##$$$$$$$$   $$$$$$$$  $$$$   $$$$$  $$$$$  $$  $$$$$$$  $$$$$$$  $$$$  $$$$$  $$$$$  $$$$        $$$$$$$##");
-print("    ##$$$$$$   $$$$$$$$$$!      $$$$$$$   $$$$   $$$$$$$$$$  $$$$$  $$$$$$  $$$$$  $$$$$  $$$$  $$$$$$$$$$$$$##");
-print("    ##$$$$   $$$$$$$$$$$$$$  $$$$$$$$$$$  $$$$  $$$$$$$$$$$  $$$$  $$$$$    $$$$$  $$$$$  $$$$  $$$$$  $$$$$$##");
-print("    ##$$$  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$  $$$$  $$$$$$$$$$$  $$$$$       $  $$$$$  $$$$$  $$$$$       $$$$$$$##");
-print("    ###$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ##$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ###$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ###$$$$$$$$_____________________&______________________&_____________&_______________$$$$$$$$$$$$$$$$$$$$##");
-print("    ###$$$$$$$|Politecnico di Torino|Fondazione Ugo Bordoni| SSB Progetti| Telecom Italia|&$$$$$$$$$$$$$$$$$$##");
-print("    ###$$$$$$$$---------------------&----------------------&-------------&---------------$$$$$$$$$$$$$$$$$$$$##");
-print("    ##$$$$________________________&_______&_________________&_______________$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ###$$|Alcatel-Lucent Bell Labs|EURECOM| Telecom Paritech| NEC Europe LTD| $$$$$$$$$$$$$$$$$$$$$$$$&&&&&$$##");
-print("    ###$$$------------------------&-------&-----------------&---------------$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ##$$________________________________________&________&_____________________________________________$$$$$$##");
-print("    ###|Telefonica Investigacion Y Desarrollo Sa|Netvisor|Forschungszentrum Telekommunikation Wien Gmbh|$$$$$##");
-print("    ###$----------------------------------------&--------&---------------------------------------------$$$$$$##");
-print("    ##$$$$$$$$_______________________&____________________&_____________________________________________$$$$$##");
-print("    ##$$$$$$$|Fachhochschule Augsburg||Universite de Liege|Eidgenoessische Technische Hochschule Zurich |$$$$##");
-print("    ###$$$$$$$-----------------------&--------------------&---------------------------------------------$$$$$##");
-print("    ###$$$$$$$$$$$$$$$$$$$$$$$______________________&_______$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ###$$$$$$$$$$$$$$$$$$$$$$|Alcatel-Lucent Bell Nv|FASTWEB|$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$#");
-print("    ###$$$$$$$$$$$$$$$$$$$$$$$----------------------&-------$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ###$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$|mPlane Client|$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$##");
-print("    ###########################################################################################################");
+
 """
 Generic mPlane client for HTTP component-push workflows.
 
@@ -96,7 +58,7 @@ class HttpClient(object):
         # store urls
         self._posturl = posturl
         url = urllib3.util.parse_url(posturl) 
-        security = False
+
         if security == True: 
             cert = mplane.utils.normalize_path(mplane.utils.read_setting(certfile, "cert"))
             key = mplane.utils.normalize_path(mplane.utils.read_setting(certfile, "key"))
@@ -332,15 +294,18 @@ class ClientShell(cmd.Cmd):
                     i = i + 1
 
     def do_showmeas(self, arg):
-        """Show receipt/results for a measurement, given a measurement index"""
+        """
+        Show specification/receipt/results for a measurement, given a measurement index.
+        """
+        meas = self._client.measurements()
         if len(arg) > 0:
-            try:
-                self._show_stmt(self._client.measurement_at(int(arg.split()[0])))
-            except:
-                print("No such measurement "+arg)
-        else:
             for i, meas in enumerate(self._client.measurements()):
-                print ("meas %4u --------------------------------------" % i)
+                if str(i) == arg:
+                    self._show_stmt(meas)
+                    return
+            print("No such measurement: " + arg)
+        else:
+            for meas in self._client.measurements():
                 self._show_stmt(meas)
 
     def _show_stmt(self, stmt):
@@ -472,13 +437,13 @@ def parse_args():
     parser.add_argument('-d', '--supervisor-ipaddr', metavar='ip', dest='SUPERVISOR_IP4', default=DEFAULT_SV_IP4, \
                         help = 'connect to the supervisor on the specified IP address [default=%s]' % DEFAULT_SV_IP4)
 
-    parser.add_argument('--disable-sec', action='store_true', default=False, dest='DISABLE_SEC',
+    parser.add_argument('--disable-ssl', action='store_true', default=False, dest='DISABLE_SSL',
                         help='Disable secure communication')
     parser.add_argument('-c', '--certfile', metavar="path", default=None, dest='CERTFILE',
                         help="Location of the configuration file for certificates")
     args = parser.parse_args()
 
-    if args.DISABLE_SEC == False and not args.CERTFILE:
+    if args.DISABLE_SSL == False and not args.CERTFILE:
         print('\nerror: missing -c|--certfile option\n')
         parser.print_help()
         sys.exit(1)
