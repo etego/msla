@@ -2,9 +2,29 @@
 ### How to run mplane architecture with msla probe.
 ________________________________________________________________________________________________________________________________________________________________________________________
 mSLACert is composed of two components:
-1. Server (mSLA_main.py)
-2. Agent (mSLA_Agent.py)
+
+				1. Server (mSLA_main.py)
+				2. Agent (mSLA_Agent.py)
+
+The Server can do the following:
+
+			1. RTT measure
+			2. TCP throughput measure
+			3. UDP throughput measure
+			4. UDP Jitter measure
+			5. UDP packet loss in %
+			6. Received mean bandwidth on client
+			7. Stores the measured data locally
+
+
+The Agent can do the following:
+
+			1. Registers at the supervisor with capability msla-AGENT-Probe-ip4.
+			2. Runs two parallel process, one for TCP and one for UDP.
+			3. Stores the test data locally				
+				
 To run the infrastrutture if you have all the requisites on ##mSLAcert_V_2.0.1 section 1. Requistes, you need to launch the following commands:
+
         1. First you need to launch the supervisor (run these commands from inside the mSLAcert-RI folder)
                 export MPLANE_CONF_DIR=./conf
                 python3 -m mplane.supervisor --disable-ssl -c ./conf/supervisor-certs.conf -s 127.0.0.1 -p 8888   (-s 127.0.0.1 -p 8888, it the IP adress of the supervisor and the port)
@@ -21,6 +41,20 @@ To run the infrastrutture if you have all the requisites on ##mSLAcert_V_2.0.1 s
 
 
 >>Please note: This version is run with dissabled SSL, if you want to enable SSL, just do not write the option --disable-ssl, and generate your own certificates, or use the existing ones. And remember to reconfigure ./conf files on the ./conf directory.
+
+The capabilities:
+
+		ping-detail-ip4
+		ping-average-ip4
+		tcpsla-detail-ip4
+		tcpsla-average-ip4
+		udpsla-average-ip4
+		udpsla-detail-ip4
+		msla-detail-ip4
+		msla-average-ip4
+		
+
+
 ##mSLAcert_V_2.0.1
 ### How to run mplane architecture with msla probe.
 ________________________________________________________________________________________________________________________________________________________________________________________
