@@ -1,15 +1,26 @@
 ##mSLAcert_V_2.0.2
 ### How to run mplane architecture with msla probe.
 ________________________________________________________________________________________________________________________________________________________________________________________
+mSLACert is composed of two components:
+1. Server (mSLA_main.py)
+2. Agent (mSLA_Agent.py)
+To run the infrastrutture if you have all the requisites on ##mSLAcert_V_2.0.1 section 1. Requistes, you need to launch the following commands:
+        1. First you need to launch the supervisor (run these commands from inside the mSLAcert-RI folder)
+                export MPLANE_CONF_DIR=./conf
+                python3 -m mplane.supervisor --disable-ssl -c ./conf/supervisor-certs.conf -s 127.0.0.1 -p 8888   (-s 127.0.0.1 -p 8888, it the IP adress of the supervisor and the port)
 
-sudo apt-get install python3-pip
+        2. Then you can launch the probe, on the same PC or on a different PC, in this case we tested them on the same PC.
+                python3 -m mplane.mSLA_main --disable-ssl -c ./conf/component-certs.conf  -d 127.0.0.1 -p 8888 (Where -d 127.0.0.1 specifies the address of the supervisor)
+                
+        3. You also can launch the client with
+                python3 -m mplane.client --disable-ssl -c ./conf/client-certs.conf -d 127.0.0.1 -p 8888 (Where -d 127.0.0.1 specifies the address of the supervisor)
 
-sudo pip install request
-sudo pip install lxml
-sudo pip install cssselect
-sudo pip install urllib3
+        4. Now on the clinet PC you need to launch the agent:
+                python3 -m mplane.mSLA_Agent --disable-ssl -c ./conf/component-certs.conf -d 127.0.0.1 -p 8888 (Where -d 127.0.0.1 specifies the address of the supervisor)
 
 
+
+>>Please note: This version is run with dissabled SSL, if you want to enable SSL, just do not write the option --disable-ssl, and generate your own certificates, or use the existing ones. And remember to reconfigure ./conf files on the ./conf directory.
 ##mSLAcert_V_2.0.1
 ### How to run mplane architecture with msla probe.
 ________________________________________________________________________________________________________________________________________________________________________________________
