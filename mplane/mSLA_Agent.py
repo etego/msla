@@ -88,6 +88,7 @@ commands = [
     'echo Starteded on	$(date)	-------------------->> ./results/mslaUDP.receive.client.txt',
     'iperf -s -u -p 5002 -i 1 -f  k >> ./results/mslaUDP.receive.client.txt &',
     'pid5002=$!',
+    'ps aux | grep -i iperf',
 #    'echo Ended on	$date	------------------------------->> ./mslaUDP.receive.client.txt',
 ]
 # run in parallel and store locally the result

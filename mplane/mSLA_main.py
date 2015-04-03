@@ -96,8 +96,9 @@ LOOP6 = "::1"
 
 PingValue = collections.namedtuple("PingValue", ["time", "seq", "ttl", "usec"])
 
-_tcpslaline_re = re.compile("[+\s+\d+]\s+\d.+\d+-\s+(\d+.+\d)\s+sec\s+(\d+.+\d+)\s+MBytes\s+(\d+\d.+\d+)\s+Mbits/sec")
-_tcpslaline_re_after_9 = re.compile("[+\s+\d+]\s+\d.+\d+\-+(\d+.+\d)\s+sec\s+(\d+.+\d+)\s+MBytes\s+(\d+\d.+\d+)\s+Mbits/sec")
+_tcpslaline_re = re.compile("\[+\s+\d+]\s+\d.+\d+-\s+(\d+.\d+)\s+sec\s+(\d+.\d+)\s+.+\s+(\d+.\d+)\s+.+")
+
+_tcpslaline_re_after_9 = re.compile("\[+\s+\d+]\s+\d.+\d+-(\d+.\d+)\s+sec\s+(\d+.\d+)\s+.+\s+(\d+.\d+)\s+.+")
 
 _tcpsla4cmd = "iperf"
 _tcpsla6cmd = "iperf"
@@ -105,17 +106,18 @@ _tcpslaopts = ["-n"]
 _tcpslaopt_period = "-i"
 _tcpslaopt_count = "-t"
 _tcpslaopt_source = "-c"
+_tcpslaopt_formatout = "-f k"
 
 tcpslaValue = collections.namedtuple("tcpslaValue", ["time", "interval", "Transfer_MB", "Bandwidth_Mbps"])
 
-_udpslaline_re = re.compile("[+\s+\d+]\s+\d.+\d+-\s+(\d+.+\d)\s+sec\s+(\d+.+\d+)\s+MBytes\s+(\d+\d.+\d+)\s+Mbits/sec")
+_udpslaline_re = re.compile("\[+\s+\d+]\s+\d.+\d+-\s+(\d+.\d+)\s+sec\s+(\d+.\d+)\s+.+\s+(\d+.\d+)\s+.+/sec")
 
-_udpslaline_re_after_9 = re.compile("[+\s+\d+]\s+\d.+\d+\-+(\d+.+\d)\s+sec\s+(\d+.+\d+)\s+MBytes\s+(\d+\d.+\d+)\s+Mbits/sec")
+_udpslaline_re_after_9 = re.compile("\[+\s+\d+]\s+\d.+\d+\-+(\d+.\d+)\s+sec\s+(\d+.\d+)\s+.+\s+(\d+.\d+)\s+.+/sec")
 
 
-_udpreport_re = re.compile("[+\s+\d+]\s+\d.+\d+-\s+(\d+.+\d)\s+sec\s+(\d+.+\d+)\s+MBytes\s+(\d+\d.+\d+)\s+Mbits/sec\s+(\d+.+\d+)\s+ms\s+(\d+)/(\d+)\s+\(+(\d+.d)")
+_udpreport_re = re.compile("\[+\s+\d+]\s+\d.+\d+-\s+(\d+.\d+)\s+sec\s+(\d+.\d+)\s+.+\s+(\d+.\d+)\s+.+\s+(\d+.\d+)\s+ms\s+(\d+)/(\d+)\s+\(+(\d+.\d+)")
 
-_udpreport_re_after_9 = re.compile("[+\s+\d+]\s+\d.+\d+\-+(\d+.+\d)\s+sec\s+(\d+.+\d+)\s+MBytes\s+(\d+\d.+\d+)\s+Mbits/sec\s+(\d+.+\d+)\s+ms\s+(\d+)/(\d+)\s+\(+(\d+.d)")
+_udpreport_re_after_9 = re.compile("\[+\s+\d+]\s+\d.+\d+\-+(\d+.\d+)\s+sec\s+(\d+.\d+)\s+.+\s+(\d+.\d+)\s+.+\s+(\d+.\d+)\s+ms\s+(\d+)/(\d+)\s+\(+(\d+.\d+)")
 
 
 udpreportvalue = collections.namedtuple("udpreportValue", ["time", "Transfer_MB", "Bandwidth_mean_Mbps", "Jitter_ms", "Lost_Datgrms", "Total_Datgrms", "Error_prc"])
@@ -217,7 +219,7 @@ def ping6_singleton_capability(ip6addr):
 def _parse_tcpsla_line(line):
     m = _tcpslaline_re.search(line)
     if m is None:
-        print(line)
+#        print(line)
         return None
     mg = m.groups()
     return tcpslaValue(datetime.utcnow(), int(float(mg[0])), int(float(mg[1])), int(float(mg[2])))
@@ -225,11 +227,12 @@ def _parse_tcpsla_line(line):
 def _parse_tcpsla_line_after_9(line):
     m = _tcpslaline_re_after_9.search(line)
     if m is None:
+#       print (line)
         return None
     mg = m.groups()
     return tcpslaValue(datetime.utcnow(), int(float(mg[0])), int(float(mg[1])), int(float(mg[2])))
 
-def _tcpsla_process(progname, sipaddr, dipaddr, period=None, count=None):
+def _tcpsla_process(progname, sipaddr, dipaddr, period=None, count=None, formatout=None):
     tcpsla_argv = [progname]
     if period is not None:
         tcpsla_argv += [_tcpslaopt_period, str(period)]
@@ -237,16 +240,17 @@ def _tcpsla_process(progname, sipaddr, dipaddr, period=None, count=None):
         tcpsla_argv += [_tcpslaopt_count, str(count)]
     tcpsla_argv += [_tcpslaopt_source, str(dipaddr)]
     tcpsla_argv += [str(sipaddr)]
+    tcpsla_argv += [_tcpslaopt_formatout, str(formatout)]
 
     print("running " + " ".join(tcpsla_argv))
 
     return subprocess.Popen(tcpsla_argv, stdout=subprocess.PIPE)
 
-def _tcpsla4_process(sipaddr, dipaddr, period=None, count=None):
-    return _tcpsla_process(_tcpsla4cmd, sipaddr, dipaddr, period, count)
+def _tcpsla4_process(sipaddr, dipaddr, period=None, count=None, formatout=None):
+    return _tcpsla_process(_tcpsla4cmd, sipaddr, dipaddr, period, count, formatout)
 
-def _tcpsla6_process(sipaddr, dipaddr, period=None, count=None):
-    return _tcpsla_process(_tcpsla6cmd, sipaddr, dipaddr, period, count)
+def _tcpsla6_process(sipaddr, dipaddr, period=None, count=None, formatout=None):
+    return _tcpsla_process(_tcpsla6cmd, sipaddr, dipaddr, period, count, formatout)
 
 def tcpslas_min_tcpBandwidth(tcpslas):
     return min(map(lambda x: x.Bandwidth_Mbps, tcpslas))
@@ -306,7 +310,7 @@ def tcpsla6_singleton_capability(ip6addr):
 def _parse_udpsla_line(line):
     m = _udpslaline_re.search(line)
     if m is None:
-        print(line)
+#        print(line)
         return None
     mg = m.groups()
 
@@ -319,12 +323,13 @@ def _parse_udpsla_last_line(line):
 #       print (line)
        return None
     lstg = lst.groups()
-    return udpreportvalue(datetime.utcnow(), int(float(lstg[1])), int(float(lstg[2])), float(lstg[3]), int(float(lstg[4])), int(float(lstg[5])), int(float(lstg[6])))
+    return udpreportvalue(datetime.utcnow(), int(float(lstg[1])), float(lstg[2]), float(lstg[3]), int(float(lstg[4])), int(float(lstg[5])), float(lstg[6]))
 
 def _parse_udpsla_line_after_9(line):
     m = _udpslaline_re_after_9.search(line)
     if m is None:
-        return None
+#       print (line)
+       return None
     mg = m.groups()
 
     return udpslaValue(datetime.utcnow(), int(float(mg[0])), int(float(mg[1])), int(float(mg[2])))
@@ -336,7 +341,7 @@ def _parse_udpsla_last_line_after_9(line):
 #       print (line)
        return None
     lstg = lst.groups()
-    return udpreportvalue(datetime.utcnow(), int(float(lstg[1])), int(float(lstg[2])), float(lstg[3]), int(float(lstg[4])), int(float(lstg[5])), int(float(lstg[6])))
+    return udpreportvalue(datetime.utcnow(), int(float(lstg[1])), float(lstg[2]), float(lstg[3]), int(float(lstg[4])), int(float(lstg[5])), float(lstg[6]))
 
     
 def _udpsla_process(progname, sipaddr, dipaddr, period=None, count=None, testudp=None, band=None, port=None):
@@ -739,9 +744,11 @@ class udpslaService(mplane.scheduler.Service):
             if check_interrupt():
                 break
             oneudpsla = _parse_udpsla_line(line.decode("utf-8"))
+#            print("udpsla "+repr(oneudpsla))
             if oneudpsla is None:
                oneudpsla = _parse_udpsla_line_after_9(line.decode("utf-8"))
             oneudpsla_last =_parse_udpsla_last_line(line.decode("utf-8"))
+#            print("udpsla_last "+repr(oneudpsla))
             if oneudpsla_last is None:
                oneudpsla_last = _parse_udpsla_last_line_after_9(line.decode("utf-8"))
             if oneudpsla is not None:
@@ -967,7 +974,7 @@ class mSLAcertService(mplane.scheduler.Service):
 
  # derive a result from the specification
         res = mplane.model.Result(specification=spec)
-        out_file = open("./results/msla.txt","w")
+        out_file = open("./results/100ms_msla.txt","w")
         # put actual start and end time into result
         res.set_when(mplane.model.When(a = pings_start_time(pings), b = pings_end_time(pings)))
 
@@ -1010,6 +1017,10 @@ class mSLAcertService(mplane.scheduler.Service):
         if res.has_result_column("mSLA.udpCapacity.download.iperf"):
             # raw numbers
             for i, oneudpsla in enumerate(udpslas):
+                res.set_result_value("delay.twoway.icmp.us", oneping.usec, i)
+                out_file.write("microsec.delay.twoway.icmp" + "	" + "RTT_in_(microsec)usec=" + repr(oneping.usec) + "	" + repr(i) + '\n')
+                res.set_result_value("mSLA.tcpBandwidth.download.iperf", onetcpsla.Bandwidth_Mbps, i)
+                out_file.write("mSLA.tcpBandwidth.download.iperf" + "	" + "TCP-Bandwidth_Mbps=" + repr(onetcpsla.Bandwidth_Mbps) + "	" + repr(i) + '\n')
                 res.set_result_value("mSLA.udpCapacity.download.iperf", oneudpsla.Bandwidth_Mbps, i)
                 out_file.write("mSLA.udpCapacity.download.iperf" + "	" + "UDP-Bandwidth_Mbps=" + repr(oneudpsla.Bandwidth_Mbps) + "	" + repr(i) + '\n')
                 res.set_result_value("mSLA.udpCapacity.download.iperf.jitter", Jitter_ms)
