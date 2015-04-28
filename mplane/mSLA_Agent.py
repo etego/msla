@@ -30,7 +30,6 @@ import time
 import mplane.model
 import mplane.scheduler
 import mplane.utils
-import mplane.tstat_caps
 from urllib3 import HTTPSConnectionPool
 from urllib3 import HTTPConnectionPool
 from socket import socket
