@@ -1,362 +1,118 @@
-##mSLAcert_V_2.0.2
-### How to run mplane architecture with msla probe.
-________________________________________________________________________________________________________________________________________________________________________________________
-mSLACert is composed of two components:
+# protocol-ri Introduction
 
-				1. Server (mSLA_main.py)
-				2. Agent (mSLA_Agent.py)
+*[**Editor's Note**: this readme is under construction]*
 
-The Server can do the following:
+This module contains the mPlane Software Development Kit.
 
-			1. RTT measure
-			2. TCP throughput measure
-			3. UDP throughput measure
-			4. UDP Jitter measure
-			5. UDP packet loss in %
-			6. Received mean bandwidth on client
-			7. Stores the measured data locally
+The draft protocol specification is available in [doc/protocol-spec.md](https://github.com/fp7mplane/protocol-ri/blob/sdk/doc); current work is in the `sdk` branch.
 
+The mPlane Protocol provides control and data interchange for passive and active network measurement tasks. It is built around a simple workflow in which __Capabilities__ are published by __Components__, which can accept __Specifications__ for measurements based on these Capabilities, and provide __Results__, either inline or via an indirect export mechanism negotiated using the protocol. 
 
-The Agent can do the following:
+Measurement statements are fundamentally based on schemas divided into Parameters, representing information required to run a measurement or query; and Result Columns, the information produced by the measurement or query. Measurement interoperability is provided at the element level; that is, measurements containing the same Parameters and Result Columns are considered to be of the same type and therefore comparable.
 
-			1. Registers at the supervisor with capability msla-AGENT-Probe-ip4.
-			2. Runs two parallel process, one for TCP and one for UDP.
-			3. Stores the test data locally				
-				
-To run the infrastrutture if you have all the requisites on ##mSLAcert_V_2.0.1 section 1. Requistes, you need to launch the following commands:
+# Using the mPlane SDK
 
-        1. First you need to launch the supervisor (run these commands from inside the mSLAcert-RI folder)
-                export MPLANE_CONF_DIR=./conf
-                python3 -m mplane.supervisor --disable-ssl -c ./conf/supervisor-certs.conf -s 127.0.0.1 -p 8888   (-s 127.0.0.1 -p 8888, it the IP adress of the supervisor and the port)
+## Prerequisites
 
-        2. Then you can launch the probe, on the same PC or on a different PC, in this case we tested them on the same PC.
-                python3 -m mplane.mSLA_main --disable-ssl -c ./conf/component-certs.conf  -d 127.0.0.1 -p 8888 (Where -d 127.0.0.1 specifies the address of the supervisor)
-                
-        3. You also can launch the client with
-                python3 -m mplane.client --disable-ssl -c ./conf/client-certs.conf -d 127.0.0.1 -p 8888 (Where -d 127.0.0.1 specifies the address of the supervisor)
+The mPlane SDK requires Python 3.3 and the following additional packages:
 
-        4. Now on the clinet PC you need to launch the agent:
-                python3 -m mplane.mSLA_Agent --disable-ssl -c ./conf/component-certs.conf -d 127.0.0.1 -p 8888 (Where -d 127.0.0.1 specifies the address of the supervisor)
+- pyyaml
+- tornado
+- urllib3
 
+## Contents
 
+The SDK is made up of several modules. The core classes are documented using Sphinx. Reasonably current Sphinx documentation can be read online [here](https://fp7mplane.github.io/protocol-ri).
 
->>Please note: This version is run with dissabled SSL, if you want to enable SSL, just do not write the option --disable-ssl, and generate your own certificates, or use the existing ones. And remember to reconfigure ./conf files on the ./conf directory.
+- `mplane.model`: Information model and JSON representation of mPlane messages. 
+- `mplane.scheduler`: Component specification scheduler. Maps capabilities to Python code that implements them (in `Service`) and keeps track of running specifications and associated results (`Job` and `MultiJob`). 
+- `mplane.tls`: Handles TLS, mapping local and peer certificates to identities and providing TLS connectivity over HTTPS.
+- `mplane.azn`: Handles access control, mapping identities to roles and authorizing roles to use specific services.
+- `mplane.client`: mPlane client framework. Handles client-initiated (`HttpClient`) and component-initiated (`ListenerHttpClient`) workflows.
+- `mplane.clientshell`: Simple command-line shell for client debugging.
+- `mplane.component`: mPlane component framework. Handles client-initiated and component-initiated workflows.
 
-The capabilities:
+## mPlane SDK Configuration Files
 
-		ping-detail-ip4
-		ping-average-ip4
-		tcpsla-detail-ip4
-		tcpsla-average-ip4
-		udpsla-average-ip4
-		udpsla-detail-ip4
-		msla-detail-ip4
-		msla-average-ip4
-		
+The TLS state, access control, client and component frameworks use a unified configuration file in Windows INI file format (as supported by the Python standard library `configparser` module).
 
+The following sections and keys are supported/required by each module:
 
-##mSLAcert_V_2.0.1
-### How to run mplane architecture with msla probe.
-________________________________________________________________________________________________________________________________________________________________________________________
-1. Requisites:
+- `TLS` section: Certificate configuration. Required by component.py and client.py to support HTTPS URLs. Has the following keys:
+    - `ca-chain`: path to file containing PEM-encoded certificates for the valid certificate authorities.
+    - `cert`: path to file containing decoded and PEM-encoded certificate identifying this component/client. Must contain the decoded certificate as well, from which the distinguished name can be extracted.
+    - `key`: path to file containing (decrypted) PEM-encoded secret key associated with this component/client's certificate
+- `Roles` section: Maps identities to roles for access control. Used by component.py. Each key in this section is an mPlane identity (see below), and the value is a comma-separated list of arbitrary role names assigned to the identity.
+- `Authorizations` section: Authorizes defined roles to invoke services associated with capabilities by capability label or token. Each key is a capability label or token, and the value is a comma-separated list of arbitrary role names which may invoke the capability. The use of labels is recommended for authorizations, as it makes authorization configuration more auditable. If authorizations are present, _only_ those capabilities which are explicitly authorized to a given client identity will be invocable. 
+- `Component` section: Global configuration for the component framework.
+- `Client` section: Global configuration for the client framework.
+- `ClientShell` section: Contains defaults for the mPlane client shell (see mPlane Client Shell below for details).
 
-        1. Python version >=3
-        2. Yalm, Tornado
-        3. Iperf, you need to have it installed on two different PCs
-        4. Minimum two linux PCs, (it can also be applyed all on the same PC, there are needed a few changes on the probe)
+### Component Modules
 
-________________________________________________________________________________________________________________________________________________________________________________________
-2. Install, Yalm, Iperf and Tornado
+In addition, any section in a configuration file given to component.py which begins with the substring `module_` will cause a component module to be loaded at runtime and that modules services to be made available (see Implementing a Component below). The `module` key in this section identifies the Python module to load by name. All other keys in this section are passed to the module's `services()` function as keyword arguments.
 
-     1. sudo apt-get install iperf
-     2. sudo apt-get install python3-yaml
-     3. sudo apt-get install python3-tornado
-     4. Download mSLAcert_2.0.1 files
-     5. Configure the configuration file for the certificates .conf/component-certs.conf and ./conf/supervisor-certs.conf, also .conf/client-certs.conf, if you will be using the client.
+### Identities
 
-        --You can either use the certificated that are on the PKI folder, or generate new one (Personaly i had an error with ssl so i had to disable security)
-______________________________________________________________________________________________________________________________________________________________________________________  
-3. The scenario is the sequent one:
+Identities in the mPlane SDK (for purposes of configuration) are represented as a dot-separated list of elements of the Distinguished Name appearing in the certificate associated with the identity. So, for example, a certificate issued to `DC=ch, DC=ethz, DC=csg, OU=clients, CN=client-33` would be represented in the Roles section of a component configuration as `ch.ethz.csg.clients.client-33`.
 
-               ___________________________________________________________________
-              |  _______                      ___                       _______   |                                              ______
-              | | PC 1  |____________________/   \_____________________| PC 2  |__|_____________________________________________| PC 3 |
-              | |Sprvs  |-------------------(Ntwrk)--------------------|Probe  |_>_>_>_>_Download_>__>__>_>__>_>_>_>>_______>_>_|Iperf |
-              | |Clien  |                    \___/                     |mSLA   |  |                                             |Server|
-              | |_______|                                              |_______|  |                                             |______|        
-              |  :::::::        It can also be the same PC              :::::::   |                                              ::::::
-              |   '''''                                                  '''''    |                                               ''''
-              |___________________________________________________________________|      
+## Implementing a Component
 
-________________________________________________________________________________________________________________________________________________________________________________________
-4. Run mPlane
+The component.py module provides a framework for building components for both component-initiated and client-initiated workflows. To implement a component for use with this framework:
 
-        1. First you need to launch the supervisor (run these commands from inside the mSLAcert-RI folder)
-                export MPLANE_CONF_DIR=./conf
-                python3 -m mplane.supervisor --disable-ssl -c ./conf/supervisor-certs.conf -s 127.0.0.1 -p 8888   (-s 127.0.0.1 -p 8888, it the IP adress of the supervisor and the port)
+- Implement each measurement, query, or other action performed by the component as a subclass of mplane.scheduler.Service. Each service is bound to a single capability. Your service must implement at least the mplane.scheduler.Service.run(self, specification, check_interrupt) method. 
 
-    	2. Then you can launch the probe, on the same PC or on a different PC, in this case we tested them on the same PC.
-                python3 -m mplane.mSLA_main --disable-ssl -c ./conf/component-certs.conf  -d 127.0.0.1 -p 8888
-                
-        3. You also can launch the client with
-                python3 -m mplane.client --disable-ssl -c ./conf/client-certs.conf -d 127.0.0.1 -p 8888
-                
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\This part is temporal, we are developing an agent probe that will register at the supervisor as such\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        
-		4. Aditional comands, on a separate PC, you need to run two iperf servers
-           Open two separate terminals and enter the sequent comands:
-                iperf -s -p 5001 -i 1 (on one terminal)
-                iperf -s -p 5002 -1 1 (on the other terminal)               
-________________________________________________________________________________________________________________________________________________________________________________________
-5. To confirm a successful registration of the probe to the supervisor you will see the sequent/similar message on the probe:
-        URL: /register/capability
+- Implement a `services` function in your module that takes a set of keyword arguments derived from the configuration file section, and returns a list of Services provided by your component. For example:
 
-        Capability registration outcome:
-        tcpsla-detail-ip4: Ok
-        udpsla-detail-ip6: Ok
-        ping-average-ip4: Ok
-        udpsla-average-ip4: Ok
-        udpsla-average-ip6: Ok
-        tcpsla-average-ip4: Ok
-        udpsla-detail-ip4: Ok
-        ping-detail-ip6: Ok
-        ping-detail-ip4: Ok
-        tcpsla-average-ip6: Ok
-        tcpsla-detail-ip6: Ok
-        ping-average-ip6: Ok
-        
-        Checking for Specifications...
-        
-While on the supervisor:
-
-        Capability ping-average-ip4 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability ping-detail-ip4 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability ping-average-ip6 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability ping-detail-ip6 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability tcpsla-average-ip4 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability tcpsla-detail-ip4 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability tcpsla-average-ip6 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability tcpsla-detail-ip6 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability udpsla-average-ip4 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability udpsla-detail-ip4 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability udpsla-average-ip6 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| register
-        Capability udpsla-detail-ip6 received from org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane|
-________________________________________________________________________________________________________________________________________________________________________________________
-6. Display, run and show results of the registered capabilities.
-6.1. On the supervisor you can view the registered capabilities with "listcap":
-
-        |mplane| listcap
-        do_listcap
-        1 - ping-average-ip4 from 127.0.0.1
-        2 - ping-detail-ip4 from 127.0.0.1
-        3 - ping-average-ip6 from 127.0.0.1
-        4 - ping-detail-ip6 from 127.0.0.1
-        5 - tcpsla-average-ip4 from 127.0.0.1
-        6 - tcpsla-detail-ip4 from 127.0.0.1
-        7 - tcpsla-average-ip6 from 127.0.0.1
-        8 - tcpsla-detail-ip6 from 127.0.0.1
-        9 - udpsla-average-ip4 from 127.0.0.1
-        10 - udpsla-detail-ip4 from 127.0.0.1
-        11 - udpsla-average-ip6 from 127.0.0.1
-        12 - udpsla-detail-ip6 from 127.0.0.1
-        |mplane| 
-
-6.2. You can run a capability at the supervisor with "runcap NUMBER-OF-CAP":
-        
-		|mplane| runcap 5 (We are runing capability number 5, that would be 5 - tcpsla-average-ip4 from 127.0.0.1)
-        |when| = now + 10s / 1s (Runing now for 10 seconds)
-        |param| source.ip4 = 192.168.208.137 (The source IP address)
-        |param| destination.ip4 = 192.168.208.104 (The IP address where is launched the Iperf server)
-        |mplane| Specification tcpsla-average-ip4 successfully pulled by org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| Result received by org.mplane.Test PKI.Test Clients.mPlane-Client
-        |mplane| 
-------------------
-While this test is run, on the probe will be displayed the sequent message:
-
-        <Service for <capability: measure (tcpsla-average-ip4) when now ... future / 1s token 60321cc2 schema daa302a4 p/m/r 2/0/4>> matches <specification: measure (tcpsla-average-ip4) when now +    10s / 1s token e5186d82 schema daa302a4 p(v)/m/r 2(2)/0/4>
-        Will interrupt <Job for <specification: measure (tcpsla-average-ip4) when now + 10s / 1s token e5186d82 schema daa302a4 p(v)/m/r 2(2)/0/4>> after 10.0 sec
-        Scheduling <Job for <specification: measure (tcpsla-average-ip4) when now + 10s / 1s token e5186d82 schema daa302a4 p(v)/m/r 2(2)/0/4>> immediately
-        running iperf -i 1.0 -t 10 -c 192.168.208.104 192.168.208.137
-        Returning <receipt:  (tcpsla-average-ip4)e5186d8207f7aab0db52e08bd4caf585>
-        iperf: ignoring extra argument -- 192.168.208.137
-        ------------------------------------------------------------
-
-        Client connecting to 192.168.208.104, TCP port 5001
-
-        TCP window size: 85.0 KByte (default)
-
-        ------------------------------------------------------------
-
-        [  3] local 192.168.208.137 port 49737 connected with 192.168.208.104 port 5001
-
-        [ ID] Interval       Transfer     Bandwidth
-
-        tcpsla tcpslaValue(time=datetime.datetime(2014, 11, 13, 9, 11, 14, 512671), interval=1, transfer=11, bandwidth=93)
-        tcpsla tcpslaValue(time=datetime.datetime(2014, 11, 13, 9, 11, 14, 512671), interval=2, transfer=11, bandwidth=93)
-        tcpsla tcpslaValue(time=datetime.datetime(2014, 11, 13, 9, 11, 15, 509674), interval=3, transfer=11, bandwidth=93)
-        tcpsla tcpslaValue(time=datetime.datetime(2014, 11, 13, 9, 11, 16, 507897), interval=4, transfer=11, bandwidth=93)
-        tcpsla tcpslaValue(time=datetime.datetime(2014, 11, 13, 9, 11, 17, 537925), interval=5, transfer=11, bandwidth=96)
-        tcpsla tcpslaValue(time=datetime.datetime(2014, 11, 13, 9, 11, 18, 527502), interval=6, transfer=11, bandwidth=93)
-        tcpsla tcpslaValue(time=datetime.datetime(2014, 11, 13, 9, 11, 19, 527509), interval=7, transfer=11, bandwidth=93)
-        tcpsla tcpslaValue(time=datetime.datetime(2014, 11, 13, 9, 11, 20, 517022), interval=8, transfer=11, bandwidth=93)
-        tcpsla tcpslaValue(time=datetime.datetime(2014, 11, 13, 9, 11, 21, 512617), interval=9, transfer=11, bandwidth=93)
-        Result for tcpsla-average-ip4 successfully returned!
-
-6.3. Show results, the results are also printed on a txt file on ./ directory of mSLA-RI, 
-     we can view the results on the supervisor of the test that are done with the comand "showmeas":
-
-        |mplane| showmeas
-        label: tcpsla-average-ip4
-        parameters:
-            destination.ip4: 192.168.208.104
-            source.ip4: 192.168.208.137
-        result: measure
-        results:
-        - mSLA.tcpBandwidth.download.iperf.min
-        - mSLA.tcpBandwidth.download.iperf.mean
-        - mSLA.tcpBandwidth.download.iperf.max
-        - mSLA.tcpBandwidth.download.iperf.timecountseconds
-        resultvalues:
-        -   - '93'
-            - '93'
-            - '96'
-            - '9'
-        token: e5186d8207f7aab0db52e08bd4caf585
-        version: 0
-        when: 2014-11-13 09:11:14.512671 ... 2014-11-13 09:11:21.512617
-
-        |mplane| 
-
-- You can also view the capability that were run with "listmeas":
-
-        |mplane| listmeas
-        1 - <result: measure (tcpsla-average-ip4) when 2014-11-13 09:11:14.512671 ... 2014-11-13 09:11:21.512617 token e5186d82 schema daa302a4 p/m/r(r) 2/0/4(1)>
-
-________________________________________________________________________________________________________________________________________________________________________________________
-7. Problems with SSL. In case you have problems with ssl or certificates:
-
-        Backup the originals and rename the seuqent files files:
-        sv_handlers_2.py --to-->> sv_handlers.py
-        supervisor_2.py  --to-->> supervisor.py
-        
-        And then launch:
-        Supervisor: python3 -m mplane.supervisor -c ./conf/supervisor-certs.conf -s 127.0.0.1 -p 8888
-        Probe: python3 -m mplane.mSLA_main_service_2 --disab  -d 127.0.0.1 -p 8888
-        
-        With the clinet, i havent work, so if you have any errors with SSL just work with the Supervisor and the Probe.
-________________________________________________________________________________________________________________________________________________________________________________________
-
-##\\\\\\\\\\\\\___END___//////////////
-
------------------------------------------------------------------------
-
-ORIGINAL README
-
-mPlane (almost) full architecture implementation
-
-This repository contains a fully working Client-Supervisor-Probe architecture.
-
-This implementation is based on the "official" python Reference Implementation, but is gone through heavy modifications (mostly for the interface parts, while the internals -scheduler and model- are pretty much the same). The main changes made to the code are the following:
-* Conversion from capability pull, specification push, to capability push, specification pull
-* Implementation of Supervisor, that works as an HTTP server. Now, all the components interact only through it
-* The whole system works on HTTPS
-
-# Usage
-After cloning this repository and installing all the libraries needed, you can run the code this way (run these commands from inside the RI folder):
-
-```
-Supervisor:
-export MPLANE_CONF_DIR=./conf
-python3 -m mplane.supervisor -c ./conf/supervisor-certs.conf -s 127.0.0.1 -p 8888
-
-Probe (tStat proxy, that for now works without running tStat, returning fictitious results):
-python3 -m mplane.tstat_proxy -T ./conf/runtime.conf -c ./conf/component-certs.conf -d 127.0.0.1 -p 8888
-
-
-Client:
-python3 -m mplane.client -c ./conf/client-certs.conf -d 127.0.0.1 -p 8888
+```python
+def service(**kwargs):
+    return [MyFirstService(kwargs['local-ip-address']),
+            MySecondService(kwargs['local-ip-address'])]
 ```
 
-There are more options available, you can show them using `-h`. The commands within the supervisor and the client are the same of the original RI, you can see a list of those using the `help` command
+- Create a module section in the component configuration file; for example if your module is called mplane.components.mycomponent:
 
-# Misc Informations
-* The interactions between the Probe and the Supervisor, and between the Supervisor and the Client are compliant to [these directives](https://github.com/finvernizzi/mplane_http_transport)
-* The configuration files are not changed from the original RI: you can set certificate paths from `conf/supervisor-certs.conf`, `conf/component-certs.conf` and `client-certs.conf`; and user-role-capability authorizations from `conf/users.conf` and `conf/caps.conf`
-* Since we are still in develop and test phases, all the PKI keys are publicly available. That, of course, will be fixed as soon as this phase ends
-* The scripts in the PKI folder allow you to generate your own certificate. It is strongly recommended to use the provided root-ca, and only generate your own client, component and supervisor certificates, so that we avoid several self-signed certificates that cannot cooperate.
-*///||\\ You will need the root-ca passphrase to generate certificates: send me a mail at stefano.pentassuglia@ssbprogetti.it and I'll tell you that.
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+```
+[service_mycomponent]
+module: mplane.components.mycomponent
+local-ip-address: 10.2.3.4
+```
 
+**[*Editor's Note:* need to define how to configure component.py for each workflow.]**
 
-##Version 1.0.1
-mSLACert Active probe
+- Run `component.py` to start your component.
 
-Description:
+## mPlane Client Shell
 
-The ubiquity of Internet access, and the wide variety of Internet-enabled devices, have made the Internet a principal pillar of the Information Society. As the importance of the Internet to everyday life grows, reliability of the characteristics of Internet service (availability, throughput, delay, etc.) grows important as well. Service Level Agreements (SLAs) between providers and customers of Internet services regulate the minimum level of service provided in terms of one or more measurable parameters.
+The mPlane Client Shell is a simple client intended for debugging of mPlane infrastructures. To start it, simply run `client.py`. It supports the following commands:
 
-We have developed an algorithm that is capable to give mSLA certification, by making use of UDP and TCP protocols. Here we present an alpha version of our algorithm, which is implemented in bash script. To achieve the mSLA certification the algorithm makes use of the tool iperf (http://iperf.fr), and PING.
+- `seturl`: Set the default URL for sending specifications and redemptions (when not given in a Capability's or Receipt's link section)
+- `getcap`: Retrieve capabilities and withdrawals from a given URL, and process them.
+- `listcap`: List available capabilities
+- `showcap`: Show the details of a capability given its label or token
+- `when`: Set the temporal scope for a subsequent `runcap` command
+- `set`: Set a default parameter value for a subsequent `runcap` command
+- `unset`: Unset a previously set default parameter value
+- `show`: Show a previously set default parameter value
+- `runcap`: Run a capability given its label or token
+- `listmeas`: List known measurements (receipts and results)
+- `showmeas`: Show the details of a measurement given its label or token.
+- `tbenable`: Enable tracebacks for subsequent exceptions. Used for client debugging.
 
-mSLAcert makes  the measurement and calculation to certify, the Goodput at layer seven, throughput at layer four and line capacity at layer 2 of OSI standard.
+## mPlane Stub Supervisor
 
+**[*Editor's Note:* need to finish building this, then document it.]**
 
-How to run the probe compliant with mplane protocol:
+# Testing and Developing the SDK
 
---------------------------------------------------------------
-------------------General-------------------------------------
---------------------------------------------------------------
-0. sudo apt-get install iperf
-1. sudo apt-get install gnome-terminal (or modify client.py, to open instead of gnome-terminal -> xfce4-terminal, or -> Terminal, or -> the name of your terminal)
-2. sudo apt-get install python3-yaml
-3. sudo apt-get install python3-pip
-4. sudo pip3 install tornado
----apt-get install python3-yaml
-   apt-get install python3-tornado
-5. PYTHONPATH="/home/...path.../sla"
-6. export PYTHONPATH
+## Testing
 
---------------------------------------------------------------
--------------Server------PING---------------------------------
---------------------------------------------------------------
+Unit testing is done with the nose package. To run:
 
-7. python3 /home/...path.../.py -4 "Server-IP-Address" --sec "0/1"
+`nosetests --with-doctest mplane.model`
 
---------------------------------------------------------------
--------------Server------TCP----------------------------------
---------------------------------------------------------------
+## Documentation
 
-7. python3 /home/...path.../slatcp.py -4 "Server-IP-Address" --sec "0/1"
+API documentation on [github](https://fp7mplane.github.io/protocol-ri) is autogenerated from Python docstrings with sphinx. Regenerating the documentation requires the sphinx package; once this is installed, use the following command from the sphinx directory to rebuild the documentation.
 
---------------------------------------------------------------
--------------Server------UDP----------------------------------
---------------------------------------------------------------
-
-7. python3 /home/...path.../slaudp.py -4 "Server-IP-Address" --sec "0/1"
-
--------------------------------------------------------------
--------------Agent-General-----------------------------------
--------------------------------------------------------------
-1. python3 /home/...path.../mplane/client.py 
-2. |mplane| connect http://"Sever-IP-Adress":8888
-3. |mplane| when now + 10s / 1s
-4. |mplane| runcap 0
-5. |param| source.ip4 = "Source-IP-Adress"
-6. |param| destination.ip4 = "Destination-IP-Adress"
-7. 
-
-
--------------------------------------------------------------
-
-The results of the probe are, the minimum, mean and maximum value of RTT, TCP measured bandwidth and UDP measure!
+`PYTHONPATH=.. make html`

@@ -1,0 +1,106 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 14 (0xe)
+    Signature Algorithm: sha1WithRSAEncryption
+        Issuer: DC=org, DC=mplane, OU=Root-CA, CN=Root-CA-1
+        Validity
+            Not Before: Apr  3 01:03:40 2015 GMT
+            Not After : Apr  2 01:03:40 2017 GMT
+        Subject: DC=org, DC=mplane, O=FUB, OU=Supervisors, CN=CI_Supervisor_FUB
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c0:c7:3c:8b:18:67:41:38:9b:9c:7f:38:c9:6d:
+                    57:71:ed:3a:ce:56:9f:08:c3:70:e2:5a:8b:fe:e3:
+                    8e:2c:2f:25:92:70:71:6a:96:64:1b:bc:77:f1:9e:
+                    59:41:3c:5f:7c:2c:25:67:69:72:b4:25:48:ee:c3:
+                    f4:70:c8:62:c3:4f:69:8e:f4:bd:85:59:8c:ec:69:
+                    5d:22:5e:b6:2b:8b:e3:b2:c7:71:e7:ce:af:97:b3:
+                    2f:46:83:aa:5f:06:c3:4c:fc:9a:8c:e7:43:62:b2:
+                    92:43:19:a6:ee:04:88:8a:68:3c:a6:44:76:32:f9:
+                    a1:ed:d7:9a:db:96:cd:0f:16:91:d5:c3:77:f6:49:
+                    a6:04:ca:bd:50:ea:26:32:30:6f:35:b0:b2:66:3b:
+                    ce:24:75:91:43:aa:56:a5:23:51:20:ec:7e:01:88:
+                    ee:8e:ea:b9:ac:06:02:e6:ae:c9:63:33:eb:9c:10:
+                    44:bd:92:10:e5:bc:d4:36:d8:06:c5:74:90:a9:44:
+                    3d:40:21:73:29:66:2c:07:ec:0f:45:25:bc:c3:12:
+                    d7:4b:9d:b6:df:3d:43:84:73:bd:93:0c:ee:35:1b:
+                    bb:c4:72:2b:81:17:28:df:fa:42:be:53:0b:3d:10:
+                    64:07:97:2d:ce:a0:40:09:89:a9:69:eb:78:8a:69:
+                    21:a1
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication, TLS Web Client Authentication
+            X509v3 Subject Key Identifier: 
+                FF:AE:91:1A:17:EB:20:7E:41:E4:6D:90:5F:14:98:EB:BD:38:09:68
+            X509v3 Authority Key Identifier: 
+                keyid:5B:74:DB:A9:23:6B:AF:29:24:ED:21:13:BE:34:DB:94:CB:24:62:F0
+
+            X509v3 Subject Alternative Name: 
+                DNS:Supervisor-1.FUB.mplane.org
+    Signature Algorithm: sha1WithRSAEncryption
+         43:8d:04:f6:71:63:05:23:ad:5e:34:2f:1d:a3:5b:e9:27:39:
+         fb:d2:17:ec:4a:bd:85:24:7d:e8:5d:93:a7:5b:b7:b1:bb:dc:
+         7f:8a:8d:8c:5a:3a:eb:09:49:ad:25:d4:76:6e:5f:a4:9c:d1:
+         c1:ef:89:41:b5:a7:4d:7f:62:be:cd:be:cb:11:ba:4b:11:65:
+         3d:b8:32:5f:96:1f:96:a7:bf:05:68:f0:6a:0a:cd:5b:35:5a:
+         99:fa:13:8e:b3:c0:46:a4:a2:11:4a:7f:40:83:2a:8b:0a:b3:
+         9c:ea:1f:19:a9:77:66:ec:1c:8c:15:17:d8:51:72:d0:78:4c:
+         7c:66:10:16:5b:e2:7d:c1:0e:6a:4a:1e:ef:07:9f:c6:2e:af:
+         dc:8c:9d:8e:a3:07:72:39:26:56:bb:17:c6:e0:92:52:ad:b4:
+         60:52:2c:f1:13:48:32:ee:75:20:ba:61:1f:f3:a4:1c:a1:16:
+         f0:60:16:4e:1e:fa:2f:d0:54:47:97:56:67:c4:a3:20:e4:a9:
+         62:51:ec:3c:62:5f:77:8b:9d:b3:d7:4a:da:bd:82:e3:ba:30:
+         24:c5:4a:d3:f9:84:89:af:8f:38:3e:fc:d7:81:04:de:32:05:
+         13:d2:17:97:51:55:89:7e:3e:3a:6d:d5:e4:69:bd:57:a9:14:
+         98:20:f2:91:1b:20:9e:bd:03:3f:dd:97:c7:64:d4:ec:d1:9a:
+         54:8e:84:77:4c:c1:fb:ed:7f:72:31:27:ed:e6:35:bc:1d:f1:
+         e3:58:98:cc:62:0c:3a:da:28:ef:a4:59:f8:67:4f:22:0b:15:
+         25:5c:d0:87:ed:a1:5c:46:9a:af:a7:98:5a:f1:d5:38:e6:60:
+         3d:54:8b:c5:94:30:34:a6:17:e9:61:75:03:98:7a:a9:b5:86:
+         4a:d6:3f:dd:c6:38:f3:a5:5d:5a:0b:3e:d5:55:bd:79:10:f2:
+         d2:98:5a:34:fd:aa:b5:18:c3:70:cd:6b:a0:e9:2d:28:c0:09:
+         46:c3:7f:0d:1c:c7:c2:2f:18:47:1f:26:df:47:85:d6:9f:60:
+         d0:d5:ff:07:29:54:49:b0:a2:f5:e6:c6:c1:16:16:6f:96:32:
+         7e:c5:31:94:ba:58:53:43:d3:fa:87:c7:51:07:79:af:b1:df:
+         60:5c:ce:64:44:cb:95:97:b5:0c:cd:3e:a5:e2:07:63:59:fb:
+         0d:8c:3c:d4:94:11:61:78:c2:0c:1b:f8:d1:a6:bc:96:c1:35:
+         f0:1d:21:1a:ed:6e:51:a5:7a:b6:59:e9:8a:16:3b:b6:3d:ae:
+         ab:27:66:e0:2a:88:a8:e3:d7:12:4b:f6:36:45:87:1c:4e:9b:
+         35:71:46:91:d9:b5:2b:d4
+-----BEGIN CERTIFICATE-----
+MIIE4TCCAsmgAwIBAgIBDjANBgkqhkiG9w0BAQUFADBTMRMwEQYKCZImiZPyLGQB
+GRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGbXBsYW5lMRAwDgYDVQQLDAdSb290LUNB
+MRIwEAYDVQQDDAlSb290LUNBLTEwHhcNMTUwNDAzMDEwMzQwWhcNMTcwNDAyMDEw
+MzQwWjBtMRMwEQYKCZImiZPyLGQBGRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGbXBs
+YW5lMQwwCgYDVQQKDANGVUIxFDASBgNVBAsMC1N1cGVydmlzb3JzMRowGAYDVQQD
+DBFDSV9TdXBlcnZpc29yX0ZVQjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+ggEBAMDHPIsYZ0E4m5x/OMltV3HtOs5WnwjDcOJai/7jjiwvJZJwcWqWZBu8d/Ge
+WUE8X3wsJWdpcrQlSO7D9HDIYsNPaY70vYVZjOxpXSJetiuL47LHcefOr5ezL0aD
+ql8Gw0z8moznQ2KykkMZpu4EiIpoPKZEdjL5oe3XmtuWzQ8WkdXDd/ZJpgTKvVDq
+JjIwbzWwsmY7ziR1kUOqVqUjUSDsfgGI7o7quawGAuauyWMz65wQRL2SEOW81DbY
+BsV0kKlEPUAhcylmLAfsD0UlvMMS10udtt89Q4RzvZMM7jUbu8RyK4EXKN/6Qr5T
+Cz0QZAeXLc6gQAmJqWnreIppIaECAwEAAaOBpTCBojAOBgNVHQ8BAf8EBAMCBaAw
+CQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwHQYDVR0O
+BBYEFP+ukRoX6yB+QeRtkF8UmOu9OAloMB8GA1UdIwQYMBaAFFt026kja68pJO0h
+E74025TLJGLwMCYGA1UdEQQfMB2CG1N1cGVydmlzb3ItMS5GVUIubXBsYW5lLm9y
+ZzANBgkqhkiG9w0BAQUFAAOCAgEAQ40E9nFjBSOtXjQvHaNb6Sc5+9IX7Eq9hSR9
+6F2Tp1u3sbvcf4qNjFo66wlJrSXUdm5fpJzRwe+JQbWnTX9ivs2+yxG6SxFlPbgy
+X5Yflqe/BWjwagrNWzVamfoTjrPARqSiEUp/QIMqiwqznOofGal3ZuwcjBUX2FFy
+0HhMfGYQFlvifcEOakoe7wefxi6v3IydjqMHcjkmVrsXxuCSUq20YFIs8RNIMu51
+ILphH/OkHKEW8GAWTh76L9BUR5dWZ8SjIOSpYlHsPGJfd4uds9dK2r2C47owJMVK
+0/mEia+POD7814EE3jIFE9IXl1FViX4+Om3V5Gm9V6kUmCDykRsgnr0DP92Xx2TU
+7NGaVI6Ed0zB++1/cjEn7eY1vB3x41iYzGIMOtoo76RZ+GdPIgsVJVzQh+2hXEaa
+r6eYWvHVOOZgPVSLxZQwNKYX6WF1A5h6qbWGStY/3cY486VdWgs+1VW9eRDy0pha
+NP2qtRjDcM1roOktKMAJRsN/DRzHwi8YRx8m30eF1p9g0NX/BylUSbCi9ebGwRYW
+b5YyfsUxlLpYU0PT+ofHUQd5r7HfYFzOZETLlZe1DM0+peIHY1n7DYw81JQRYXjC
+DBv40aa8lsE18B0hGu1uUaV6tlnpihY7tj2uqydm4CqIqOPXEkv2NkWHHE6bNXFG
+kdm1K9Q=
+-----END CERTIFICATE-----
