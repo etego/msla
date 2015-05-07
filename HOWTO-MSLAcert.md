@@ -122,9 +122,7 @@ if you want you can change the ports 5001 and 5002 from the mSLAcert_main.py and
 
 ### HOWTO run for mSLAcert with component-initiated workflow, run in this order:
 
->>>To run the CI components (with SSL), from the protocol-ri directory, run:
-
->>>To run CI mSLAcert server:
+>>>To run CI mSLAcert server (with SSL):
 
 ```export MPLANE_CONF_DIR=./conf```
 
@@ -132,7 +130,7 @@ if you want you can change the ports 5001 and 5002 from the mSLAcert_main.py and
 
 
 
->>>To run CI mSLAcert Agent:
+>>>To run CI mSLAcert Agent (with SSL):
 
 ```export MPLANE_CONF_DIR=./conf```
 
@@ -140,7 +138,7 @@ if you want you can change the ports 5001 and 5002 from the mSLAcert_main.py and
 
 
 
->>>To run mPlane client:
+>>>To run mPlane client (with SSL):
 
 ```export MPLANE_CONF_DIR=./conf```
 
@@ -149,7 +147,7 @@ if you want you can change the ports 5001 and 5002 from the mSLAcert_main.py and
 
 
 
->>>End the supoervisor in the end:
+>>>End the supoervisor (with SSL) in the end:
 
 ```export MPLANE_CONF_DIR=./conf```
 
