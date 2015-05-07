@@ -9,13 +9,14 @@ The mPlane SDK requires Python 3.3 and the following additional packages:
 
 ###The network scenario on which the files are currently configured:
 
-PC1 - 192.168.1.1 <<<-------------------------------------------------------->>>> PC2 - 192.168.1.2
+		PC1 - 192.168.1.1 <<<-------------------------------------------------------->>>> PC2 - 192.168.1.2
 
-mSLAcert_main, Supervisor<<<-------------------------------------------------->>>mPlane Client, mSLAcert_Agent
+		mSLAcert_main, Supervisor<<<-------------------------------------------------->>>mPlane Client, mSLAcert_Agent
 
 In base of you network configuration you have to change the seguent files, for the Ip and certificates:
 
 ./conf/client.conf
+
 		[TLS]
 		cert = PKI/ca/certs/"client-certicate".crt
 		key = PKI/ca/certs/"plaintext certificate.key
@@ -34,6 +35,7 @@ In base of you network configuration you have to change the seguent files, for t
 		capability-url: "IP supervisor":8890/
 		
 ./conf/component*.conf
+
 		[TLS]
 		cert = PKI/ca/certs/"Components-certicate".crt
 		key = PKI/ca/certs/"plaintext certificate.key
@@ -65,6 +67,7 @@ In base of you network configuration you have to change the seguent files, for t
 		listen-port = 8888
 
 ./conf/supervisor.conf
+
 		[TLS]
 		cert = PKI/ca/certs/"client-certicate".crt
 		key = PKI/ca/certs/"plaintext certificate.key
@@ -105,10 +108,10 @@ In base of you network configuration you have to change the seguent files, for t
 		listen-port = 8890
 
 ###To generate certificates use the scripts
-./PKI/create_client_cert.sh
-./PKI/create_component_cert.sh
-./PKI/create_supervisor_cert.sh
-"follow instruction on ./PKI/HOWTO.txt"
+	./PKI/create_client_cert.sh
+	./PKI/create_component_cert.sh
+	./PKI/create_supervisor_cert.sh
+	"follow instruction on ./PKI/HOWTO.txt"
 
 ### HOWTO run for mSLAcert with component-initiated workflow, run in this order:
 
