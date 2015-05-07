@@ -5,6 +5,7 @@ The mPlane SDK requires Python 3.3 and the following additional packages:
 - pyyaml
 - tornado
 - urllib3
+- Iperf
 
 
 ###The network scenario on which the files are currently configured:
@@ -111,6 +112,13 @@ In base of you network configuration you have to change the seguent files, for t
 	./PKI/create_component_cert.sh
 	./PKI/create_supervisor_cert.sh
 	"follow instruction on ./PKI/HOWTO.txt"
+	
+### Additional configuration
+mSLAcert uses Iperf to generate traffic, the traffic flows from mSLAcert_main to mSLAcert_Agent.
+For TCP traffic is used port 5001, and for UDP traffic port 5002. 
+When using NAT remeber to use port forwarding for the one configured above, 
+if you want you can change the ports 5001 and 5002 from the mSLAcert_main.py and mSLAcert_Agent.py
+
 
 ### HOWTO run for mSLAcert with component-initiated workflow, run in this order:
 
