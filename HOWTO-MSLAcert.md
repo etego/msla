@@ -10,9 +10,8 @@ The mPlane SDK requires Python 3.3 and the following additional packages:
 ###The network scenario on which the files are currently configured:
 
 		PC1 - 192.168.1.1 <<<-------------------------------------------------------->>>> PC2 - 192.168.1.2
-
-		Supervisor<<<-------------------------------------------------->>>mPlane Client
-		mSLAcert_main                                                     mSLAcert_Agent
+				Supervisor <<<------------------------------------------------------->>> mPlane Client
+				mSLAcert_main                                                     		 mSLAcert_Agent
 In base of you network configuration you have to change the seguent files, for the Ip and certificates:
 
 ./conf/client.conf
