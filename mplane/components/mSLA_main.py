@@ -1,9 +1,9 @@
 # mPlane Protocol Reference Implementation
 # tStat component code
 #
-# (c) 2013-2014 mPlane Consortium (http://www.ict-mplane.eu)
+# (c) 2013-2015 mPlane Consortium (http://www.ict-mplane.eu)
 #               Author: Edion TEGO
-# mSLAcert-V-2.0.2
+# mSLAcert-V-3.0.1
 # 
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free

@@ -151,7 +151,7 @@ if you want you can change the ports 5001 and 5002 from the mSLAcert_main.py and
 
 ```export MPLANE_CONF_DIR=./conf```
 
-```python3 -m mplane.supervisor -config ./conf/supervisor-certs.conf```
+```python3 -m mplane.supervisor --config ./conf/supervisor.conf```
 
 
 This will launch the supervisor. 
