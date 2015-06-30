@@ -740,11 +740,11 @@ class udpslaService(mplane.scheduler.Service):
         if spec.has_parameter("destination.ip4"):
             sipaddr = spec.get_parameter_value("source.ip4")
             dipaddr = spec.get_parameter_value("destination.ip4")
-            udpsla_process = _udpsla4_process(sipaddr, dipaddr, period, count=round(int((count / 1)-1)))
+            udpsla_process = _udpsla4_process(sipaddr, dipaddr, period, count=round(int((count / 1)-2)))
         elif spec.has_parameter("destination.ip6"):
             sipaddr = spec.get_parameter_value("source.ip6")
             dipaddr = spec.get_parameter_value("destination.ip6")
-            udpsla_process = _udpsla6_process(sipaddr, dipaddr, period, count=round(int((count / 1)-1)))
+            udpsla_process = _udpsla6_process(sipaddr, dipaddr, period, count=round(int((count / 1)-2)))
         else:
             raise ValueError("Missing destination")
 
@@ -941,11 +941,11 @@ class mSLAcertService(mplane.scheduler.Service):
         if spec.has_parameter("destination.ip4"):
             sipaddr = spec.get_parameter_value("source.ip4")
             dipaddr = spec.get_parameter_value("destination.ip4")
-            udpsla_process = _udpsla4_process(sipaddr, dipaddr, period, count=round(int((count / 3)-1)))
+            udpsla_process = _udpsla4_process(sipaddr, dipaddr, period, count=round(int((count / 3)-2)))
         elif spec.has_parameter("destination.ip6"):
             sipaddr = spec.get_parameter_value("source.ip6")
             dipaddr = spec.get_parameter_value("destination.ip6")
-            udpsla_process = _udpsla6_process(sipaddr, dipaddr, period, count=round(int((count / 3)-1)))
+            udpsla_process = _udpsla6_process(sipaddr, dipaddr, period, count=round(int((count / 3)-2)))
         else:
             raise ValueError("Missing destination")
             
