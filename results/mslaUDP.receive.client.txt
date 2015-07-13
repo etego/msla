@@ -1,0 +1,101 @@
+Starteded on Wed Jun 24 13:20:53 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------
+Starteded on Wed Jun 24 13:36:53 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------
+Starteded on Wed Jun 24 13:43:03 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------
+Starteded on Wed Jun 24 14:22:57 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------
+Starteded on Wed Jun 24 14:23:20 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------
+[  3] local 192.168.1.2 port 5002 connected with 192.168.1.1 port 50348
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0- 1.0 sec  12173 KBytes  99725 Kbits/sec   0.012 ms    0/ 8480 (0%)
+[  3]  1.0- 2.0 sec  11981 KBytes  98149 Kbits/sec   0.004 ms    0/ 8346 (0%)
+[  3]  2.0- 3.0 sec  12123 KBytes  99313 Kbits/sec   0.003 ms    0/ 8445 (0%)
+[  3]  3.0- 4.0 sec  12073 KBytes  98902 Kbits/sec   0.005 ms    0/ 8410 (0%)
+[  3]  4.0- 5.0 sec  12073 KBytes  98902 Kbits/sec   0.008 ms    0/ 8410 (0%)
+[  3]  5.0- 6.0 sec  12135 KBytes  99407 Kbits/sec   0.008 ms    0/ 8453 (0%)
+[  3]  6.0- 7.0 sec  12113 KBytes  99231 Kbits/sec   0.005 ms    0/ 8438 (0%)
+[  3]  7.0- 8.0 sec  12150 KBytes  99537 Kbits/sec   0.047 ms    0/ 8464 (0%)
+[  3]  8.0- 9.0 sec  12165 KBytes  99654 Kbits/sec   0.024 ms    0/ 8474 (0%)
+[  3]  9.0-10.0 sec  12166 KBytes  99666 Kbits/sec   0.017 ms    0/ 8475 (0%)
+[  3] 10.0-11.0 sec  12150 KBytes  99537 Kbits/sec   0.035 ms    0/ 8464 (0%)
+[  3] 11.0-12.0 sec  12165 KBytes  99654 Kbits/sec   0.077 ms    0/ 8474 (0%)
+[  3] 12.0-13.0 sec  12161 KBytes  99619 Kbits/sec   0.004 ms    0/ 8471 (0%)
+[  3] 13.0-14.0 sec  12155 KBytes  99572 Kbits/sec   0.014 ms    0/ 8467 (0%)
+[  3] 14.0-15.0 sec  12056 KBytes  98760 Kbits/sec   0.007 ms    0/ 8398 (0%)
+[  3] 15.0-16.0 sec  12161 KBytes  99619 Kbits/sec   0.003 ms    0/ 8471 (0%)
+[  3] 16.0-17.0 sec  12129 KBytes  99360 Kbits/sec   0.025 ms    0/ 8449 (0%)
+[  3]  0.0-18.0 sec  218262 KBytes  99345 Kbits/sec   0.019 ms    0/152040 (0%)
+[  3]  0.0-18.0 sec  1 datagrams received out-of-order
+[  4] local 192.168.1.2 port 5002 connected with 192.168.1.1 port 44750
+[  4]  0.0- 1.0 sec  12384 KBytes  101454 Kbits/sec   0.147 ms 2627/11254 (23%)
+[  4]  1.0- 2.0 sec  12148 KBytes  99513 Kbits/sec   0.115 ms    0/ 8462 (0%)
+[  4]  2.0- 3.0 sec  12149 KBytes  99525 Kbits/sec   0.156 ms    0/ 8463 (0%)
+[  4]  3.0- 4.0 sec  12153 KBytes  99560 Kbits/sec   0.156 ms    0/ 8466 (0%)
+[  4]  4.0- 5.0 sec  12165 KBytes  99654 Kbits/sec   0.121 ms    0/ 8474 (0%)
+[  4]  5.0- 6.0 sec  12148 KBytes  99513 Kbits/sec   0.188 ms    0/ 8462 (0%)
+[  4]  6.0- 7.0 sec  12162 KBytes  99631 Kbits/sec   0.120 ms    0/ 8472 (0%)
+[  4]  7.0- 8.0 sec  12132 KBytes  99384 Kbits/sec   0.088 ms    0/ 8451 (0%)
+[  4]  8.0- 9.0 sec  12169 KBytes  99690 Kbits/sec   0.118 ms    0/ 8477 (0%)
+[  4]  9.0-10.0 sec  12028 KBytes  98537 Kbits/sec   0.146 ms   85/ 8464 (1%)
+[  4] 10.0-11.0 sec  12166 KBytes  99666 Kbits/sec   0.159 ms    0/ 8475 (0%)
+[  4] 11.0-12.0 sec  12162 KBytes  99631 Kbits/sec   0.174 ms    0/ 8472 (0%)
+[  4] 12.0-13.0 sec  12156 KBytes  99584 Kbits/sec   0.130 ms    0/ 8468 (0%)
+[  4] 13.0-14.0 sec  12148 KBytes  99513 Kbits/sec   0.146 ms    0/ 8462 (0%)
+[  4] 14.0-15.0 sec  12148 KBytes  99513 Kbits/sec   0.169 ms    0/ 8462 (0%)
+[  4] 15.0-16.0 sec  12182 KBytes  99795 Kbits/sec   0.140 ms    0/ 8486 (0%)
+[  4] 16.0-17.0 sec  12158 KBytes  99595 Kbits/sec   0.124 ms    0/ 8469 (0%)
+[  4]  0.0-17.7 sec  214900 KBytes  99624 Kbits/sec   0.197 ms 2711/152410 (1.8%)
+[  4]  0.0-17.7 sec  1 datagrams received out-of-order
+Starteded on Tue Jun 30 14:31:56 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------
+Starteded on Fri Jul 3 12:22:56 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------
+Starteded on Fri Jul 3 20:43:06 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------
+Starteded on Fri Jul 10 14:51:14 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------
+Starteded on Fri Jul 10 14:51:58 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on UDP port 5002
+Receiving 1470 byte datagrams
+UDP buffer size:  160 KByte (default)
+------------------------------------------------------------

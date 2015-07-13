@@ -1,0 +1,15 @@
+microsec.delay.twoway.icmp.min	RTT_min_in_(microsec)usec=224
+microsec.delay.twoway.icmp.mean	RTT_mean_in_(microsec)usec=284
+microsec.delay.twoway.icmp.max	RTT_max_in_(microsec)usec=625
+microsec.delay.twoway.icmp.count	RTT_test_duration_seconds=13
+mSLA.tcpBandwidth.download.iperf.min	TCP-Bandwidth_Mbps_min_sended=96
+mSLA.tcpBandwidth.download.iperf.mean	TCP-Bandwidth_Mbps_mean_sended=97
+mSLA.tcpBandwidth.download.iperf.max	TCP-Bandwidth_Mbps_max_sended=109
+mSLA.tcpBandwidth.download.iperf.timecountseconds	TCP_test_duration_in_seconds14
+mSLA.udpCapacity.download.iperf.min	UDP-Bandwidth_Mbps_min_sended=99
+mSLA.udpCapacity.download.iperf.mean	UDP-Bandwidth_Mbps_mean_sended=99
+mSLA.udpCapacity.download.iperf.max	UDP-Bandwidth_Mbps_max_sended=99
+mSLA.udpCapacity.download.iperf.timecountseconds	UDP_test_duration_in_seconds12
+mSLA.udpCapacity.download.iperf.jitter	UDP-Jitter_in_ms=0.004
+mSLA.udpCapacity.download.iperf.error	UDP-dagram_Error_in_perc=0.42
+mSLA-Bandwidth_mean_Mbps-Correct-UDP	UDP-Bandwidth_mean_Mbps_Correct=99.1

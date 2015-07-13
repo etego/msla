@@ -348,6 +348,8 @@ VALUE_NONE = "*"
 TIME_PAST = "past"
 TIME_NOW = "now"
 TIME_FUTURE = "future"
+#FIX ME
+MAX_TIME = 100000
 
 WHEN_REPEAT = "repeat "
 WHEN_CRON = " cron "
@@ -455,7 +457,8 @@ def parse_time(valstr):
             mstr = m.group(0)
             mg = m.groups()
             if mg[3]:
-                # FIXME handle fractional seconds correctly
+                # FIXME this only handles millseconds; we should handle
+                # general precision fractional seconds correctly
                 dt = datetime.strptime(mstr, "%Y-%m-%d %H:%M:%S.%f")
             elif mg[2]:
                 dt = datetime.strptime(mstr, "%Y-%m-%d %H:%M:%S")
@@ -478,7 +481,9 @@ def parse_dur(valstr):
         return None
     else:
         m = _dur_re.match(valstr)
-        if m:
+        if "inf" == valstr:
+            return timedelta(seconds=MAX_TIME*_dur_seclabel[0][0])
+        elif m:
             mg = m.groups()
             valsec = 0
             for i in range(4):
@@ -837,6 +842,7 @@ class When(object):
         """
         Return the duration of this temporal scope as a timedelta.
 
+        If the temporal scope is indefinite in the future, returns None.
         """
         if self._duration is not None:
             return self._duration
@@ -1582,7 +1588,7 @@ class Registry(object):
         return len(self._elements)
 
     def __getitem__(self, name):
-        return self._elements[name]
+        return self._elements.get(name, None)
 
     def _add_element(self, elem):
         self._elements[elem.name()] = elem
@@ -1647,8 +1653,11 @@ class Registry(object):
             if scheme == "file" or scheme == "":
                 uri = "file://" + normalize_path(uri)
 
-            with urllib.request.urlopen(uri) as stream:
-                self._parse_json_bytestream(stream)
+            try:
+                with urllib.request.urlopen(uri) as stream:
+                    self._parse_json_bytestream(stream)
+            except:
+                raise ValueError("Invalid Registry uri: " + uri)
 
     def _dump_json(self):
         d = collections.OrderedDict()
@@ -1675,24 +1684,12 @@ class Registry(object):
         return self._uri
 
 _base_registry = None
-_registries = {}
+_registries = collections.OrderedDict()
 
 def preload_registry(filename=None):
     global _registries
-    _registries[uri] = Registry(filename=filename)
-
-def initialize_registry(uri=REGURI_DEFAULT):
-    """
-    Initializes the mPlane registry from a URI; if no URI is given,
-    initializes the registry from the internal core registry.
-
-    Call this before doing anything else.
-
-    """
-    global _base_registry
-    global _registries
-    _base_registry = Registry(uri=uri)
-    _registries[uri] = _base_registry
+    preloaded = Registry(filename=filename)
+    _registries[preloaded.uri()] = preloaded
 
 def registry_for_uri(uri):
     """
@@ -1707,6 +1704,17 @@ def registry_for_uri(uri):
 
     return _registries[uri]
 
+def initialize_registry(uri=REGURI_DEFAULT):
+    """
+    Initializes the mPlane registry from a URI; if no URI is given,
+    initializes the registry from the internal core registry.
+
+    Call this after preloading registries, but before doing anything else.
+
+    """
+    global _base_registry
+    _base_registry = registry_for_uri(uri)
+
 def element(name, reguri=None):
     """
     Returns the Element with the given name.
@@ -1715,10 +1723,15 @@ def element(name, reguri=None):
     """
     global _base_registry
     global _registries
-    if reguri:
-        return _registries[reguri][name]
-    else:
+
+    for reg in _registries:
+        if _registries[reg][name] != None:
+            return _registries[reg][name]
+    if _base_registry[name] != None:
         return _base_registry[name]
+
+    # fall-through: no results
+    raise KeyError("Key error: " + name + " not present in registries")
 
 def test_registry():
     # default registry trough the Registry-Object
@@ -1752,8 +1765,6 @@ def test_registry():
     assert element("start").name() == "start"
     assert element("start").primitive_name() == "time"
     assert element("start").desc() == "Start time of an event/flow that may have a non-zero duration"
-
-
 
 #######################################################################
 # Constraints
@@ -1914,7 +1925,7 @@ class Parameter(Element):
         elif isinstance(constraint, _Constraint):
             self._constraint = constraint
         else:
-            self._constraint = SetConstraint(vs=set([constraint]), prim=self._prim)
+            self._constraint = _SetConstraint(vs=set([constraint]), prim=self._prim)
 
         self.set_value(val)
 
@@ -2090,7 +2101,6 @@ class Statement(object):
         super().__init__()
         # Make a blank statement
         self._version = MPLANE_VERSION
-        self._reguri = REGURI_DEFAULT
         self._params = collections.OrderedDict()
         self._metadata = collections.OrderedDict()
         self._resultcolumns = collections.OrderedDict()
@@ -2115,6 +2125,8 @@ class Statement(object):
             self._when = when
             if reguri is not None:
                 self._reguri = reguri
+            else:
+                self._reguri = _base_registry.uri()
 
     def __repr__(self):
         return "<"+self.kind_str()+": "+self._verb+self._label_repr()+\
@@ -2140,10 +2152,6 @@ class Statement(object):
     def verb(self):
         """Returns this statement's verb"""
         return self._verb
-
-    def is_query(self):
-        """ FIXME: This method should be called is_schedulable(). Check implementations where this method is used. """
-        return self._verb == VERB_QUERY
 
     def add_parameter(self, elem_name, constraint=constraint_all, val=None):
         """Programatically adds a parameter to this Statement."""
@@ -2500,8 +2508,8 @@ class Capability(Statement):
 
     """
 
-    def __init__(self, dictval=None, verb=VERB_MEASURE, label=None, token=None, when=None):
-        super().__init__(dictval=dictval, verb=verb, label=label, token=token, when=when)
+    def __init__(self, dictval=None, verb=VERB_MEASURE, label=None, token=None, when=None, registry_uri=None):
+        super().__init__(dictval=dictval, verb=verb, label=label, token=token, when=when, reguri=registry_uri)
 
     def _more_repr(self):
         return " p/m/r "+str(self.count_parameters())+"/"+\
@@ -2549,8 +2557,7 @@ class Specification(Statement):
 
     Specifications are created either by passing a Capability the
     Specification is intended to use as the capability= argument of
-    the constructor, or by reading from a JSON or YAML object
-    [FIXME document how this works once it's written]
+    the constructor, or by reading from a JSON object (see model.parse_json()).
 
     """
 
@@ -2564,6 +2571,7 @@ class Specification(Statement):
             self._metadata = capability._metadata
             self._params = deepcopy(capability._params)
             self._resultcolumns = deepcopy(capability._resultcolumns)
+            self._reguri = capability._reguri
 
             # inherit from capability only when necessary
             if when is None:
@@ -2607,6 +2615,17 @@ class Specification(Statement):
         if (not pval) or (self.count_result_rows() > 0):
             raise ValueError("Specifications must have parameter values.")
 
+    def is_schedulable(self):
+        """
+        Determine if a specification can be scheduled -- i.e., that its
+        temporal scope refers to some time in the future at which a
+        measurement or other operation should take place, or some range of
+        time for which existing data should be searched and/or retrieved.
+
+        Currently, this just checks to see whether the verb is 'query'.
+        """
+        return self._verb != VERB_QUERY
+
     def _default_token(self):
         return self._pv_hash()
 
@@ -2643,9 +2662,10 @@ class Specification(Statement):
 class Result(Statement):
     """
     A result is a statement that a component measured
-    a given set of values at a given point in time according to a specification.
+    a given set of values at a given point in time, according to a specification.
 
-    Note, tits token is generally inherited from the respective specification.
+    Results are generally created by passing the specification the new result responds to as the specification= argument to the constructor. A result inherits its token from the specification it responds to.
+
     """
     def __init__(self, dictval=None, specification=None, verb=VERB_MEASURE, label=None, token=None, when=None):
         super().__init__(dictval=dictval, verb=verb, label=label, token=token, when=when)
@@ -2655,6 +2675,7 @@ class Result(Statement):
             self._metadata = specification._metadata
             self._params = deepcopy(specification._params)
             self._resultcolumns = deepcopy(specification._resultcolumns)
+            self._reguri = specification._reguri
             # assign token from specification
             self._token = specification.get_token()
             # allow parameters to take values other than constrained
@@ -2769,6 +2790,9 @@ class Exception(BareNotification):
     def __repr__(self):
         return "<Exception: "+self.get_token()+" "+self._errmsg+">"
 
+    def kind_str(self):
+        return KIND_EXCEPTION
+
     def get_token(self):
         """
         Returns a token that originates from a message that has caused
@@ -2802,12 +2826,15 @@ class _StatementNotification(Statement):
     def __init__(self, dictval=None, statement=None, verb=VERB_MEASURE, token=None):
         super().__init__(dictval=dictval, verb=verb, token=token)
         if dictval is None and statement is not None:
+            self._label = statement._label
             self._verb = statement._verb
             self._when = statement._when
+            self._reguri = statement._reguri
             self._metadata = statement._metadata
             self._params = deepcopy(statement._params)
             self._resultcolumns = deepcopy(statement._resultcolumns)
             self._token = statement.get_token()
+            self._reguri = statement._reguri
 
     def __repr__(self):
         return "<"+self.kind_str()+": "+self._label_repr()+self.get_token()+">"
@@ -3003,6 +3030,7 @@ class Envelope(object):
     def when(self):
         """ Returns the envelope's temporal scope. (If it's a bunch of multijob results) """
         return self._when
+
 #######################################################################
 # Utility methods
 #######################################################################
@@ -3060,9 +3088,14 @@ def render_text(message):
 
 def render(msg):
     d = msg.to_dict()
-    out = "%s: %s\n" % (msg.kind_str(), msg.verb())
 
-    for section in (KEY_LABEL, KEY_LINK, KEY_EXPORT, KEY_TOKEN, KEY_WHEN):
+    if msg.kind_str() == KIND_EXCEPTION:
+        out = KIND_EXCEPTION + ": " + d[KIND_EXCEPTION] + "\n"
+    else:
+        out = "%s: %s\n" % (msg.kind_str(), msg.verb())
+
+    for section in (KEY_MESSAGE, KEY_LABEL, KEY_LINK,
+                    KEY_EXPORT, KEY_TOKEN, KEY_WHEN, KEY_REGISTRY):
         if section in d:
             out += "    %-12s: %s\n" % (section, d[section])
 

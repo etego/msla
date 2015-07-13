@@ -1,0 +1,73 @@
+Starteded on Wed Jun 24 13:20:53 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+Starteded on Wed Jun 24 13:36:53 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+Starteded on Wed Jun 24 13:43:03 CEST 2015 --------------------
+Starteded on Wed Jun 24 14:22:57 CEST 2015 --------------------
+Starteded on Wed Jun 24 14:23:20 CEST 2015 --------------------
+[  4] local 192.168.1.2 port 5001 connected with 192.168.1.1 port 35804
+[ ID] Interval       Transfer     Bandwidth
+[  4]  0.0- 1.0 sec  194183 KBytes  1590748 Kbits/sec
+[  4]  1.0- 2.0 sec  216628 KBytes  1774619 Kbits/sec
+[  4]  2.0- 3.0 sec  208839 KBytes  1710813 Kbits/sec
+[  4]  3.0- 4.0 sec  204408 KBytes  1674512 Kbits/sec
+[  4]  4.0- 5.0 sec  199949 KBytes  1637986 Kbits/sec
+[  4]  5.0- 6.0 sec  193691 KBytes  1586716 Kbits/sec
+[  4]  6.0- 7.0 sec  57838 KBytes  473811 Kbits/sec
+[  4]  7.0- 8.0 sec  151015 KBytes  1237111 Kbits/sec
+[  4]  8.0- 9.0 sec  191676 KBytes  1570211 Kbits/sec
+[  4]  9.0-10.0 sec  189878 KBytes  1555478 Kbits/sec
+[  4] 10.0-11.0 sec  194933 KBytes  1596889 Kbits/sec
+[  4] 11.0-12.0 sec  196241 KBytes  1607606 Kbits/sec
+[  4] 12.0-13.0 sec  194031 KBytes  1589502 Kbits/sec
+[  4] 13.0-14.0 sec  192201 KBytes  1574509 Kbits/sec
+[  4] 14.0-15.0 sec  189256 KBytes  1550386 Kbits/sec
+[  4] 15.0-16.0 sec  191504 KBytes  1568797 Kbits/sec
+[  4] 16.0-17.0 sec  194634 KBytes  1594444 Kbits/sec
+[  4] 17.0-18.0 sec  194605 KBytes  1594206 Kbits/sec
+[  4] 18.0-19.0 sec  189828 KBytes  1555073 Kbits/sec
+[  4]  0.0-19.9 sec  3729792 KBytes  1531796 Kbits/sec
+[  5] local 192.168.1.2 port 5001 connected with 192.168.1.1 port 35805
+[  5]  0.0- 1.0 sec  98713 KBytes  808661 Kbits/sec
+[  5]  1.0- 2.0 sec  130834 KBytes  1071795 Kbits/sec
+[  5]  2.0- 3.0 sec  155109 KBytes  1270656 Kbits/sec
+[  5]  3.0- 4.0 sec  154437 KBytes  1265149 Kbits/sec
+[  5]  4.0- 5.0 sec  139074 KBytes  1139295 Kbits/sec
+[  5]  5.0- 6.0 sec  147055 KBytes  1204677 Kbits/sec
+[  5]  6.0- 7.0 sec  145685 KBytes  1193448 Kbits/sec
+[  5]  7.0- 8.0 sec  132201 KBytes  1082994 Kbits/sec
+[  5]  8.0- 9.0 sec  141922 KBytes  1162625 Kbits/sec
+[  5]  9.0-10.0 sec  150849 KBytes  1235752 Kbits/sec
+[  5] 10.0-11.0 sec  140133 KBytes  1147972 Kbits/sec
+[  5] 11.0-12.0 sec  146445 KBytes  1199681 Kbits/sec
+[  5] 12.0-13.0 sec  151630 KBytes  1242150 Kbits/sec
+[  5] 13.0-14.0 sec  147376 KBytes  1207305 Kbits/sec
+[  5] 14.0-15.0 sec  146068 KBytes  1196587 Kbits/sec
+[  5] 15.0-16.0 sec  140755 KBytes  1153062 Kbits/sec
+[  5] 16.0-17.0 sec  138835 KBytes  1137335 Kbits/sec
+[  5] 17.0-18.0 sec  144852 KBytes  1186625 Kbits/sec
+[  5] 18.0-19.0 sec  123978 KBytes  1015628 Kbits/sec
+[  5]  0.0-19.9 sec  2788096 KBytes  1147502 Kbits/sec
+Starteded on Tue Jun 30 14:31:56 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+Starteded on Fri Jul 3 12:22:56 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+Starteded on Fri Jul 3 20:43:06 CEST 2015 --------------------
+Starteded on Fri Jul 10 14:51:14 CEST 2015 --------------------
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+Starteded on Fri Jul 10 14:51:58 CEST 2015 --------------------

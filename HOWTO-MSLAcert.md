@@ -5,18 +5,17 @@ The mPlane SDK requires Python 3.3 and the following additional packages:
 - pyyaml
 - tornado
 - urllib3
-- Iperf
-
+$ sudo apt-get install expect
 
 ###The network scenario on which the files are currently configured:
 
-		PC1 - 192.168.1.1 <<<-------------------------------------------------------->>>> PC2 - 192.168.1.2
-				Supervisor <<<------------------------------------------------------->>> mPlane Client
-				mSLAcert_main                                                     		 mSLAcert_Agent
+PC1 - 192.168.1.1 <<<-------------------------------------------------------->>>> PC2 - 192.168.1.2
+
+mSLAcert_main, Supervisor<<<-------------------------------------------------->>>mPlane Client, mSLAcert_Agent
+
 In base of you network configuration you have to change the seguent files, for the Ip and certificates:
 
 ./conf/client.conf
-
 		[TLS]
 		cert = PKI/ca/certs/"client-certicate".crt
 		key = PKI/ca/certs/"plaintext certificate.key
@@ -35,7 +34,6 @@ In base of you network configuration you have to change the seguent files, for t
 		capability-url: "IP supervisor":8890/
 		
 ./conf/component*.conf
-
 		[TLS]
 		cert = PKI/ca/certs/"Components-certicate".crt
 		key = PKI/ca/certs/"plaintext certificate.key
@@ -67,7 +65,6 @@ In base of you network configuration you have to change the seguent files, for t
 		listen-port = 8888
 
 ./conf/supervisor.conf
-
 		[TLS]
 		cert = PKI/ca/certs/"client-certicate".crt
 		key = PKI/ca/certs/"plaintext certificate.key
@@ -108,50 +105,43 @@ In base of you network configuration you have to change the seguent files, for t
 		listen-port = 8890
 
 ###To generate certificates use the scripts
-	./PKI/create_client_cert.sh
-	./PKI/create_component_cert.sh
-	./PKI/create_supervisor_cert.sh
-	"follow instruction on ./PKI/HOWTO.txt"
-	
-### Additional configuration
-mSLAcert uses Iperf to generate traffic, the traffic flows from mSLAcert_main to mSLAcert_Agent.
-For TCP traffic is used port 5001, and for UDP traffic port 5002. 
-When using NAT remeber to use port forwarding for the one configured above, 
-if you want you can change the ports 5001 and 5002 from the mSLAcert_main.py and mSLAcert_Agent.py
-
+./PKI/create_client_cert.sh
+./PKI/create_component_cert.sh
+./PKI/create_supervisor_cert.sh
+"follow instruction on ./PKI/HOWTO.txt"
 
 ### HOWTO run for mSLAcert with component-initiated workflow, run in this order:
 
->>>To run CI mSLAcert server (with SSL):
+>>>To run the CI components (with SSL), from the protocol-ri directory, run:
 
-```export MPLANE_CONF_DIR=./conf```
+>>>To run CI mSLAcert server:
 
-```python3 -m mplane.component --config ./conf/component.conf```
+```export PYTHONPATH=.```
 
-
-
->>>To run CI mSLAcert Agent (with SSL):
-
-```export MPLANE_CONF_DIR=./conf```
-
-```python3 -m mplane.component --config ./conf/component-agent.conf```
+```./scripts/mpcom --config ./conf/component.conf```
 
 
 
->>>To run mPlane client (with SSL):
+>>>To run CI mSLAcert Agent:
 
-```export MPLANE_CONF_DIR=./conf```
+```export PYTHONPATH=.```
 
-```python3 -m mplane.clientshell --config ./conf/client.conf```
-
-
+```./scripts/mpcom --config ./conf/component-agent.conf```
 
 
->>>End the supoervisor (with SSL) in the end:
 
-```export MPLANE_CONF_DIR=./conf```
+>>>To run mPlane client:
 
-```python3 -m mplane.supervisor --config ./conf/supervisor.conf```
+```export PYTHONPATH=.```
+
+```./scripts/mpcli --config ./conf/client.conf```
+
+
+>>>End the supoervisor in the end:
+
+```export PYTHONPATH=.```
+
+```./scripts/mpsup --config ./conf/supervisor.conf```
 
 
 This will launch the supervisor. 
@@ -166,4 +156,3 @@ This will launch the supervisor.
 		when now + 34s / 1s
 5. do a new measurement for the same capability and destination
 		set destination.ip4 x.x.x.x
-
